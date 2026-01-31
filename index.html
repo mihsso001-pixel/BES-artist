@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="sw" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bes Artist | Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Unbounded:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .artist-font { font-family: 'Unbounded', sans-serif; }
+        .tiktok-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+    </style>
+</head>
+<body class="bg-[#fafafa] text-[#1a1a1a]">
+
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <img src="logo.png" alt="Bes Artist Logo" class="h-12 w-auto object-contain">
+            </a>
+
+            <div class="hidden md:flex space-x-8 font-medium text-sm tracking-widest uppercase">
+                <a href="index.html" class="text-black border-b-2 border-black">Nyumbani</a>
+                <a href="gallery.html" class="hover:text-gray-500 transition">Gallery</a>
+                <a href="#tiktok" class="hover:text-gray-500 transition">TikTok</a>
+                <a href="#kuhusu" class="hover:text-gray-500 transition">Kuhusu</a>
+            </div>
+
+            <button class="md:hidden text-2xl">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section class="relative h-screen flex items-center justify-center pt-20">
+        <div class="text-center px-6">
+            <span class="inline-block py-1 px-3 mb-4 text-xs font-bold tracking-[0.3em] bg-black text-white rounded-full">MSANII WA MICHORO</span>
+            <h1 class="artist-font text-5xl md:text-8xl mb-6 leading-none">BES <br> ARTIST.</h1>
+            <p class="max-w-md mx-auto text-gray-600 mb-8 text-lg">Kugusa hisia kupitia brashi na rangi. Karibu kwenye ulimwengu wa sanaa ya Brayan.</p>
+            <a href="gallery.html" class="inline-block bg-black text-white px-10 py-4 text-sm font-bold tracking-widest hover:bg-gray-800 transition duration-300">
+                TAZAMA GALLERY <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <section id="tiktok" class="py-24 bg-white px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <h2 class="artist-font text-3xl mb-2">TIKTOK FEED</h2>
+                    <p class="text-gray-500">Video fupi za michoro yetu mipya.</p>
+                </div>
+                <a href="https://www.tiktok.com/@your_username" target="_blank" class="mt-4 md:mt-0 text-sm font-bold border-b-2 border-black pb-1">FOLLOW ON TIKTOK</a>
+            </div>
+
+            <div class="tiktok-grid">
+                <div class="rounded-2xl overflow-hidden bg-gray-100 aspect-[9/16] relative group">
+                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 italic text-sm p-4 text-center">
+                        Hapa kutaonekana TikTok Video ya 1. (Paste TikTok embed code hapa)
+                    </div>
+                </div>
+                <div class="rounded-2xl overflow-hidden bg-gray-100 aspect-[9/16] relative">
+                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 italic text-sm p-4 text-center">
+                        Hapa kutaonekana TikTok Video ya 2.
+                    </div>
+                </div>
+                <div class="rounded-2xl overflow-hidden bg-gray-100 aspect-[9/16] relative">
+                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 italic text-sm p-4 text-center">
+                        Hapa kutaonekana TikTok Video ya 3.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#1a1a1a] text-white py-16 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-8 md:mb-0">
+                <img src="logo.png" alt="Logo" class="h-10 invert brightness-0 mb-4 mx-auto md:mx-0">
+                <p class="text-gray-400 text-sm">&copy; 2024 Bes Artist. Haki zote zimehifadhiwa.</p>
+            </div>
+
+            <div class="flex space-x-6 text-2xl">
+                <a href="#" class="hover:text-pink-500 transition"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-blue-400 transition"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-red-500 transition"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="#" class="hover:text-green-500 transition"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
