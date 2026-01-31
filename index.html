@@ -91,7 +91,7 @@
         <div class="max-w-7xl mx-auto">
             <h2 class="artist-font text-2xl mb-10 text-center uppercase tracking-widest">Creative Feed</h2>
             <div id="tiktok-container" class="video-wrapper">
-                <p class="text-center col-span-full text-gray-400">Loading creative process...</p>
+                <p class="text-center col-span-full text-gray-400 italic">Curating visual experiences...</p>
             </div>
         </div>
     </section>
@@ -104,7 +104,6 @@
 
     <footer id="wasiliana" class="bg-black text-white py-20 px-6 text-center border-t border-gray-800 mt-20">
         <div class="max-w-7xl mx-auto">
-            
             <p class="artist-font text-lg mb-12 tracking-widest outline-text uppercase">Connect with Bes</p>
             
             <div class="flex flex-wrap justify-center gap-10 mb-16">
@@ -144,20 +143,35 @@
 
         async function fetchVideos() {
             const container = document.getElementById('tiktok-container');
-            const { data, error } = await supabaseClient.from('videos').select('*');
+            
+            // Tunachukua video toka Supabase
+            const { data, error } = await supabaseClient
+                .from('videos')
+                .select('*')
+                .order('created_at', { ascending: false });
+
             if (data && data.length > 0) {
-                container.innerHTML = '';
+                container.innerHTML = ''; // Futa loading text
                 data.forEach(item => {
                     container.innerHTML += `
-                        <div class="bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 p-1">
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 p-2 transition-transform hover:scale-[1.02]">
                             <blockquote class="tiktok-embed" cite="${item.video_url}" data-video-id="${item.video_id}" style="width: 100%;">
-                                <section>Loading...</section>
+                                <section>Loading creative work...</section>
                             </blockquote>
                         </div>`;
                 });
-                if (window.TiktokJS) { window.TiktokJS.load(); }
+
+                // Hii inalazimisha TikTok i-load video baada ya kuziweka kwenye HTML
+                if (window.twttr) { } 
+                if (typeof window.TiktokJS !== 'undefined') {
+                    window.TiktokJS.load();
+                }
+            } else if (error) {
+                container.innerHTML = `<p class="text-center text-red-400">Error loading feed. Please refresh.</p>`;
             }
         }
+        
+        // Tunaita function
         fetchVideos();
     </script>
 </body>
