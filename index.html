@@ -4,26 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bes Artist | Home</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Unbounded:wght@900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         .artist-font { font-family: 'Unbounded', sans-serif; }
+        
+        /* Gradient Inayomove (Yellow, Black, White) */
+        .moving-nav {
+            background: linear-gradient(-45deg, #facc15, #000000, #ffffff, #facc15);
+            background-size: 400% 400%;
+            animation: gradientMove 10s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .fade-in { animation: fadeIn 1s ease-in; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="bg-[#fafafa] text-[#1a1a1a]">
 
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+    <nav class="moving-nav fixed w-full z-50 border-b border-gray-800 shadow-xl">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <a href="index.html"><img src="logo.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain"></a>
-            <div class="hidden md:flex space-x-10 font-bold text-[11px] tracking-[0.2em] uppercase">
-                <a href="index.html" class="text-black border-b-2 border-black">Nyumbani</a>
-                <a href="gallery.html" class="text-gray-400 hover:text-black transition">Gallery</a>
-                <a href="#tiktok" class="text-gray-400 hover:text-black transition">TikTok</a>
+            <a href="index.html" class="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+                <img src="logo.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
+            </a>
+
+            <div class="hidden md:flex space-x-10 font-bold text-[11px] tracking-[0.2em] uppercase text-white">
+                <a href="index.html" class="border-b-2 border-yellow-400">Nyumbani</a>
+                <a href="gallery.html" class="hover:text-yellow-400 transition">Gallery</a>
+                <a href="#tiktok" class="hover:text-yellow-400 transition">TikTok</a>
+                <a href="#wasiliana" class="hover:text-yellow-400 transition">Wasiliana</a>
             </div>
+
+            <button class="md:hidden text-white text-xl"><i class="fa-solid fa-bars-staggered"></i></button>
         </div>
     </nav>
 
@@ -31,47 +55,80 @@
         <div class="text-center">
             <span class="inline-block py-1 px-4 mb-6 text-[10px] font-bold tracking-[0.4em] bg-black text-white rounded-full uppercase">Official Portfolio</span>
             <h1 class="artist-font text-5xl md:text-8xl mb-6 leading-[0.9]">BES <br><span class="text-transparent" style="-webkit-text-stroke: 1px black;">ARTIST.</span></h1>
-            <p class="max-w-lg mx-auto text-gray-500 mb-10 text-lg font-light">Mchoraji Brayan: Akileta maisha kwenye karatasi kupitia sanaa ya kisasa.</p>
+            <p class="max-w-lg mx-auto text-gray-500 mb-10 text-lg leading-relaxed font-light">
+                Mchoraji Brayan: Akileta maisha kwenye karatasi kupitia sanaa ya kisasa na ubunifu usio na mipaka.
+            </p>
             <div class="flex flex-col md:flex-row gap-4 justify-center">
-                <a href="gallery.html" class="bg-black text-white px-10 py-5 text-xs font-bold tracking-widest hover:bg-gray-800 transition shadow-2xl">GALLERY</a>
-                <a href="#tiktok" class="border border-black px-10 py-5 text-xs font-bold tracking-widest hover:bg-black hover:text-white transition">VIDEO</a>
+                <a href="gallery.html" class="bg-black text-white px-10 py-5 text-xs font-bold tracking-widest hover:bg-gray-800 transition shadow-2xl">
+                    TAZAMA GALLERY
+                </a>
+                <a href="#tiktok" class="border border-black px-10 py-5 text-xs font-bold tracking-widest hover:bg-black hover:text-white transition">
+                    ANGALIA VIDEO
+                </a>
             </div>
         </div>
     </section>
 
-    <section id="tiktok" class="py-24 bg-white px-6">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="artist-font text-3xl mb-12 text-center uppercase tracking-widest">TikTok Feed</h2>
+    <section id="tiktok" class="py-24 bg-white border-y border-gray-100 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="artist-font text-3xl md:text-4xl mb-12 uppercase tracking-widest">TikTok Feed</h2>
+            
             <div id="tiktok-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <p class="col-span-full text-center">Inapakia video...</p>
+                <p class="col-span-full">Inapakia video za Brayan...</p>
             </div>
         </div>
     </section>
 
-    <footer class="bg-black text-white py-12 text-center">
-        <div class="flex justify-center space-x-8 mb-8 text-2xl">
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+    <footer id="wasiliana" class="bg-black text-white py-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <img src="logo.png" alt="Logo" class="h-12 mx-auto mb-8 invert brightness-0">
+            <p class="artist-font text-xl mb-10 text-gray-400 font-light italic">"Kila mchoro una hadithi yake."</p>
+            
+            <div class="flex flex-wrap justify-center gap-8 mb-12">
+                <a href="https://youtube.com/@USERNAME" target="_blank" class="text-3xl hover:text-red-600 transition duration-300">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://tiktok.com/@USERNAME" target="_blank" class="text-3xl hover:text-pink-500 transition duration-300">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+                <a href="https://x.com/USERNAME" target="_blank" class="text-3xl hover:text-blue-400 transition duration-300">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="https://facebook.com/USERNAME" target="_blank" class="text-3xl hover:text-blue-600 transition duration-300">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a href="https://instagram.com/USERNAME" target="_blank" class="text-3xl hover:text-pink-600 transition duration-300">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://wa.me/255XXXXXXXXX" target="_blank" class="text-3xl hover:text-green-500 transition duration-300">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
+            
+            <div class="pt-10 border-t border-gray-800 text-[10px] tracking-[0.2em] text-gray-500 uppercase">
+                &copy; 2026 Bes Artist | Crafted for Brayan
+            </div>
         </div>
-        <p class="text-[10px] tracking-[0.2em] text-gray-500 uppercase">&copy; 2026 Bes Artist</p>
     </footer>
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script async src="https://www.tiktok.com/embed.js"></script>
+
     <script>
+        // API KEYS ZAKO (ZIMESHAJAZWA)
         const _supabaseURL = 'https://czifyhpvtdesbwpofbmv.supabase.co';
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
 
         async function fetchVideos() {
-            const { data, error } = await supabaseClient.from('videos').select('*');
             const container = document.getElementById('tiktok-container');
+            const { data, error } = await supabaseClient.from('videos').select('*');
+
             if (data && data.length > 0) {
                 container.innerHTML = '';
                 data.forEach(item => {
                     container.innerHTML += `
-                        <div class="fade-in bg-white rounded-2xl overflow-hidden shadow-lg">
+                        <div class="fade-in bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
                             <blockquote class="tiktok-embed" cite="${item.video_url}" data-video-id="${item.video_id}" style="max-width: 605px; min-width: 325px;">
                                 <section>Loading...</section>
                             </blockquote>
@@ -79,7 +136,7 @@
                 });
                 if (window.TiktokJS) { window.TiktokJS.load(); }
             } else {
-                container.innerHTML = '<p class="col-span-full text-center text-gray-400">Ongeza video kwenye table ya "videos" kule Supabase.</p>';
+                container.innerHTML = '<p class="col-span-full text-gray-400 font-bold uppercase tracking-widest text-xs">Bado hakuna video kule Supabase Table</p>';
             }
         }
         fetchVideos();
