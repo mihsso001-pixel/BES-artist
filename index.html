@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="sw" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,15 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        body, html { 
-            height: 100%; 
-            margin: 0; 
-            overflow: hidden; /* Inazuia scroll kwenye PC na Simu */
-            font-family: 'Inter', sans-serif; 
-        }
+        /* Bakia na mifumo ileile ya mwanzo */
+        body { font-family: 'Inter', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         .artist-font { font-family: 'Unbounded', sans-serif; }
         
-        /* Gradient Inayomove */
         .moving-nav {
             background: linear-gradient(-45deg, #facc15, #000000, #ffffff, #facc15);
             background-size: 400% 400%;
@@ -29,49 +24,48 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Video Horizontal Slider kwa Simu */
-        .tiktok-slider {
+        /* Video Horizontal kwa Simu (Inayozuia Scroll ya juu-chini) */
+        #tiktok-container {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
-            gap: 15px;
-            padding-bottom: 10px;
-            scrollbar-width: none; /* Inaficha scrollbar Firefox */
+            scrollbar-width: none;
+            gap: 1rem;
         }
-        .tiktok-slider::-webkit-scrollbar { display: none; } /* Inaficha scrollbar Chrome/Safari */
+        #tiktok-container::-webkit-scrollbar { display: none; }
         
-        .tiktok-card {
-            flex: 0 0 85%; /* Inachukua 85% ya upana wa simu */
+        .video-card {
+            flex: 0 0 85%; /* Kwa simu */
             scroll-snap-align: center;
         }
 
         @media (min-width: 768px) {
-            body { overflow-y: auto; } /* PC inaweza ku-scroll kidogo kama ikihitajika */
-            .tiktok-card { flex: 0 0 30%; }
+            body { overflow-y: auto; } /* PC inaweza kuscrool kidogo */
+            .video-card { flex: 0 0 30%; }
         }
     </style>
 </head>
-<body class="bg-[#fafafa] flex flex-col h-screen">
+<body class="bg-[#fafafa] text-[#1a1a1a]">
 
-    <nav class="moving-nav w-full z-[100] border-b border-gray-800 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-            <a href="index.html" class="bg-white/20 p-1 rounded backdrop-blur-sm">
-                <img src="logo.png" alt="Logo" class="h-8 md:h-10 w-auto">
+    <nav class="moving-nav fixed w-full z-[100] border-b border-gray-800 shadow-xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="index.html" class="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+                <img src="logo.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
             </a>
 
-            <div class="hidden md:flex space-x-6 font-bold text-[10px] tracking-[0.2em] uppercase text-white">
+            <div class="hidden md:flex space-x-10 font-bold text-[11px] tracking-[0.2em] uppercase text-white">
                 <a href="index.html" class="border-b-2 border-yellow-400">Home</a>
-                <a href="gallery.html" class="hover:text-yellow-400">Gallery</a>
-                <a href="kuhusu.html" class="hover:text-yellow-400">Kuhusu Bes</a>
-                <a href="wasiliana.html" class="hover:text-yellow-400">Wasiliana</a>
+                <a href="gallery.html" class="hover:text-yellow-400 transition">Gallery</a>
+                <a href="kuhusu.html" class="hover:text-yellow-400 transition">Kuhusu Bes</a>
+                <a href="wasiliana.html" class="hover:text-yellow-400 transition">Wasiliana</a>
             </div>
 
-            <button onclick="toggleMenu()" class="md:hidden text-white text-xl">
+            <button onclick="toggleMenu()" class="md:hidden text-white text-2xl focus:outline-none">
                 <i class="fa-solid fa-bars-staggered" id="menu-icon"></i>
             </button>
         </div>
 
-        <div id="mobile-menu" class="hidden flex-col bg-black text-white p-6 space-y-4 font-bold text-center tracking-widest uppercase text-xs">
+        <div id="mobile-menu" class="hidden flex-col bg-black text-white p-6 space-y-4 font-bold text-center tracking-widest uppercase text-xs border-t border-gray-800">
             <a href="index.html" class="text-yellow-400">Home</a>
             <a href="gallery.html">Gallery</a>
             <a href="kuhusu.html">Kuhusu Bes</a>
@@ -79,37 +73,35 @@
         </div>
     </nav>
 
-    <main class="flex-grow flex flex-col justify-between p-4 overflow-hidden">
+    <main class="flex-grow flex flex-col justify-center pt-24 px-6 overflow-hidden">
         
-        <div class="text-center pt-2">
-            <h1 class="artist-font text-3xl md:text-6xl leading-none">BES ARTIST.</h1>
-            <p class="text-[10px] md:text-sm text-gray-500 mt-2 uppercase tracking-widest font-bold">Mchoraji Brayan | Sanaa ya Kisasa</p>
+        <div class="text-center mb-6">
+            <span class="inline-block py-1 px-4 mb-4 text-[10px] font-bold tracking-[0.4em] bg-black text-white rounded-full uppercase">Official Portfolio</span>
+            <h1 class="artist-font text-4xl md:text-8xl leading-[0.9]">BES ARTIST.</h1>
+            <p class="max-w-lg mx-auto text-gray-500 mt-4 text-xs md:text-sm font-light uppercase tracking-widest font-bold">Mchoraji Brayan | Sanaa ya Kisasa</p>
         </div>
 
-        <div class="mt-4">
-            <div id="tiktok-container" class="tiktok-slider">
-                <p class="text-center w-full text-xs text-gray-400 uppercase tracking-widest">Inapakia video...</p>
-            </div>
+        <div id="tiktok-container" class="mb-6">
+            <p class="w-full text-center text-gray-400 text-xs uppercase tracking-widest">Inapakia video...</p>
         </div>
 
-        <div class="flex justify-center mb-2">
-            <a href="gallery.html" class="bg-black text-white px-8 py-3 text-[10px] font-bold tracking-[0.3em] hover:bg-yellow-400 hover:text-black transition uppercase">
+        <div class="text-center pb-4">
+            <a href="gallery.html" class="inline-block bg-black text-white px-8 py-4 text-[10px] font-bold tracking-[0.3em] hover:bg-yellow-400 hover:text-black transition uppercase shadow-2xl">
                 Fungua Gallery
             </a>
         </div>
-
     </main>
 
-    <footer class="bg-black text-white py-6 px-4 text-center border-t border-gray-800">
-        <div class="flex justify-center space-x-6 mb-4 text-xl">
-            <a href="https://youtube.com/@USERNAME" target="_blank" class="hover:text-red-600"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://tiktok.com/@USERNAME" target="_blank" class="hover:text-pink-500"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="https://x.com/USERNAME" target="_blank" class="hover:text-blue-400"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://facebook.com/USERNAME" target="_blank" class="hover:text-blue-600"><i class="fa-brands fa-facebook"></i></a>
-            <a href="https://instagram.com/USERNAME" target="_blank" class="hover:text-pink-600"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://wa.me/255XXXXXXXXX" target="_blank" class="hover:text-green-500"><i class="fa-brands fa-whatsapp"></i></a>
+    <footer class="bg-black text-white py-8 px-6 text-center border-t border-gray-800">
+        <div class="flex justify-center space-x-8 mb-6 text-2xl">
+            <a href="https://youtube.com/@USERNAME" target="_blank" class="hover:text-red-600 transition"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://tiktok.com/@USERNAME" target="_blank" class="hover:text-pink-500 transition"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://x.com/USERNAME" target="_blank" class="hover:text-blue-400 transition"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://facebook.com/USERNAME" target="_blank" class="hover:text-blue-600 transition"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://instagram.com/USERNAME" target="_blank" class="hover:text-pink-600 transition"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/255XXXXXXXXX" target="_blank" class="hover:text-green-500 transition"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
-        <div class="text-[8px] tracking-[0.2em] text-gray-600 uppercase">
+        <div class="text-[8px] tracking-[0.3em] text-gray-600 uppercase">
             &copy; 2026 Bes Artist | MSANII BRAYAN
         </div>
     </footer>
@@ -133,12 +125,12 @@
 
         async function fetchVideos() {
             const container = document.getElementById('tiktok-container');
-            const { data, error } = await supabaseClient.from('videos').select('*');
+            const { data } = await supabaseClient.from('videos').select('*');
             if (data && data.length > 0) {
                 container.innerHTML = '';
                 data.forEach(item => {
                     container.innerHTML += `
-                        <div class="tiktok-card bg-white rounded-lg shadow-lg overflow-hidden flex-shrink-0">
+                        <div class="video-card bg-white rounded-xl shadow-lg overflow-hidden flex-shrink-0">
                             <blockquote class="tiktok-embed" cite="${item.video_url}" data-video-id="${item.video_id}" style="width: 100%;">
                                 <section></section>
                             </blockquote>
