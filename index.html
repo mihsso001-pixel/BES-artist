@@ -122,7 +122,6 @@
     </footer>
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <script async src="https://www.tiktok.com/embed.js"></script>
 
     <script>
         function toggleMenu() {
@@ -144,26 +143,37 @@
         async function fetchVideos() {
             const container = document.getElementById('tiktok-container');
             
-            // Tunachukua video toka Supabase
             const { data, error } = await supabaseClient
                 .from('videos')
                 .select('*')
                 .order('created_at', { ascending: false });
 
             if (data && data.length > 0) {
-                container.innerHTML = ''; // Futa loading text
+                container.innerHTML = ''; 
                 data.forEach(item => {
                     container.innerHTML += `
                         <div class="bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 p-2 transition-transform hover:scale-[1.02]">
                             <blockquote class="tiktok-embed" cite="${item.video_url}" data-video-id="${item.video_id}" style="width: 100%;">
-                                <section>Loading creative work...</section>
+                                <section>
+                                    <a target="_blank" href="${item.video_url}">@brianartstudio1</a>
+                                </section>
                             </blockquote>
                         </div>`;
                 });
 
-                // Hii inalazimisha TikTok i-load video baada ya kuziweka kwenye HTML
-                if (window.twttr) { } 
-                if (typeof window.TiktokJS !== 'undefined') {
+                // DAWA YA WHITE COVER:
+                // Tunafuta script ya zamani na kuweka mpya ili ilazimishe video kuloadi
+                const existingScript = document.getElementById('tiktok-lib');
+                if (existingScript) existingScript.remove();
+
+                const script = document.createElement('script');
+                script.id = 'tiktok-lib';
+                script.src = "https://www.tiktok.com/embed.js";
+                script.async = true;
+                document.body.appendChild(script);
+
+                // Ikiwa script tayari ipo kwenye memory, iwashe
+                if (window.TiktokJS) {
                     window.TiktokJS.load();
                 }
             } else if (error) {
@@ -171,7 +181,6 @@
             }
         }
         
-        // Tunaita function
         fetchVideos();
     </script>
 </body>
