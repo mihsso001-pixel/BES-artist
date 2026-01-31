@@ -42,7 +42,7 @@
         
         /* Video Container Styles */
         .video-card {
-            min-width: 85vw; /* Kadi inachukua 85% ya upana wa simu */
+            min-width: 85vw; 
             scroll-snap-align: center;
         }
         @media (min-width: 768px) {
@@ -57,15 +57,24 @@
             <a href="index.html" class="flex items-center">
                 <img src="logo.png" alt="Bes Artist" class="logo-circle transition-transform hover:scale-110">
             </a>
+
             <div class="hidden md:flex space-x-10 font-bold text-[11px] tracking-[0.2em] uppercase text-white">
                 <a href="index.html" class="border-b-2 border-yellow-400">Home</a>
                 <a href="gallery.html" class="hover:text-yellow-400 transition">Gallery</a>
                 <a href="kuhusu.html" class="hover:text-yellow-400 transition">About</a>
                 <a href="wasiliana.html" class="hover:text-yellow-400 transition">Contact</a>
             </div>
-            <button onclick="toggleMenu()" class="md:hidden text-white text-3xl">
+
+            <button onclick="toggleMenu()" class="md:hidden text-white text-3xl focus:outline-none">
                 <i class="fa-solid fa-bars-staggered" id="menu-icon"></i>
             </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden flex-col bg-black text-white p-6 space-y-4 font-bold text-center tracking-widest uppercase text-xs border-t border-gray-800 shadow-2xl">
+            <a href="index.html" class="text-yellow-400">Home</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="kuhusu.html">About Bes</a>
+            <a href="wasiliana.html">Contact</a>
         </div>
     </nav>
 
@@ -114,10 +123,12 @@
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
             menu.classList.toggle('hidden');
-            if (menu.classList.contains('hidden')) {
-                icon.classList.replace('fa-xmark', 'fa-bars-staggered');
-            } else {
+            menu.classList.toggle('flex');
+            
+            if (menu.classList.contains('flex')) {
                 icon.classList.replace('fa-bars-staggered', 'fa-xmark');
+            } else {
+                icon.classList.replace('fa-xmark', 'fa-bars-staggered');
             }
         }
 
@@ -136,13 +147,14 @@
                 container.innerHTML = ''; 
                 data.forEach(item => {
                     container.innerHTML += `
-                        <div class="video-card bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 p-2 transition-transform">
+                        <div class="video-card bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 p-2">
                             <blockquote class="tiktok-embed" cite="${item.video_url}" data-video-id="${item.video_id}" style="width: 100%;">
-                                <section><a target="_blank" href="${item.video_url}">Loading...</a></section>
+                                <section><a target="_blank" href="${item.video_url}">@brianartstudio1</a></section>
                             </blockquote>
                         </div>`;
                 });
 
+                // Reload TikTok Script
                 const existingScript = document.getElementById('tiktok-lib');
                 if (existingScript) existingScript.remove();
                 const script = document.createElement('script');
