@@ -28,25 +28,35 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* Circular Logo Styling */
+        .logo-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        @media (min-width: 768px) {
+            .logo-circle { width: 90px; height: 90px; }
+        }
+
         .video-wrapper {
             display: grid;
             gap: 20px;
             grid-template-columns: 1fr;
         }
-
         @media (min-width: 768px) {
-            .video-wrapper {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .video-wrapper { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
 <body class="bg-[#fafafa] text-[#1a1a1a]">
 
     <nav class="moving-nav fixed w-full z-[100] border-b border-gray-800 shadow-xl">
-        <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-6 h-28 flex justify-between items-center">
             <a href="index.html" class="flex items-center">
-                <img src="logo.png" alt="Bes Artist Logo" class="h-14 md:h-20 w-auto object-contain transition-transform hover:scale-105">
+                <img src="logo.png" alt="Bes Artist" class="logo-circle transition-transform hover:scale-110">
             </a>
 
             <div class="hidden md:flex space-x-10 font-bold text-[11px] tracking-[0.2em] uppercase text-white">
@@ -69,7 +79,7 @@
         </div>
     </nav>
 
-    <section class="pt-52 pb-10 px-6 text-center">
+    <section class="pt-56 pb-10 px-6 text-center">
         <span class="inline-block py-1 px-4 mb-6 text-[10px] font-bold tracking-[0.4em] bg-black text-white rounded-full uppercase">Official Portfolio</span>
         <h1 class="artist-font text-5xl md:text-8xl leading-[0.9] uppercase">
             BES <br> <span class="outline-text">ARTIST.</span>
@@ -92,13 +102,12 @@
         </a>
     </div>
 
-    <footer id="wasiliana" class="bg-black text-white py-24 px-6 text-center border-t border-gray-800 mt-20">
+    <footer id="wasiliana" class="bg-black text-white py-20 px-6 text-center border-t border-gray-800 mt-20">
         <div class="max-w-7xl mx-auto">
-            <div class="flex justify-center mb-12">
-                <img src="logo.png" alt="Bes Artist Logo" class="h-24 md:h-32 w-auto object-contain brightness-110">
-            </div>
             
-            <div class="flex flex-wrap justify-center gap-8 mb-12">
+            <p class="artist-font text-lg mb-12 tracking-widest outline-text uppercase">Connect with Bes</p>
+            
+            <div class="flex flex-wrap justify-center gap-10 mb-16">
                 <a href="https://youtube.com/@USERNAME" target="_blank" class="text-3xl hover:text-red-600 transition"><i class="fa-brands fa-youtube"></i></a>
                 <a href="https://tiktok.com/@USERNAME" target="_blank" class="text-3xl hover:text-pink-500 transition"><i class="fa-brands fa-tiktok"></i></a>
                 <a href="https://x.com/USERNAME" target="_blank" class="text-3xl hover:text-gray-400 transition"><i class="fa-brands fa-x-twitter"></i></a>
