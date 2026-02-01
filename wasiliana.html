@@ -101,20 +101,22 @@
                     <div class="space-y-10">
                         <div class="group">
                             <h3 class="artist-font text-[10px] tracking-[0.4em] uppercase mb-4 text-yellow-500">Location</h3>
-                            <a href="https://maps.google.com/?q=Dar+es+Salaam" target="_blank" class="text-2xl font-light hover:text-yellow-500 transition-all flex items-center">
+                            <a href="https://www.google.com/maps/search/Dar+es+Salaam" target="_blank" class="text-2xl font-light hover:text-yellow-500 transition-all flex items-center">
                                 <i class="fa-solid fa-location-dot mr-4 text-sm"></i> Dar es Salaam, Tanzania
                             </a>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <a href="tel:+2557XXXXXXXX" class="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col">
-                                <span class="text-[9px] uppercase text-gray-400 tracking-widest mb-2">Voice Call</span>
-                                <span class="text-lg font-bold">+255 7XX XXX XXX</span>
-                            </a>
-                            <a href="https://wa.me/2557XXXXXXXX" target="_blank" class="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col">
-                                <span class="text-[9px] uppercase text-gray-400 tracking-widest mb-2">WhatsApp</span>
-                                <span class="text-lg font-bold">+255 7XX XXX XXX</span>
-                            </a>
+                            <div class="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col space-y-3">
+                                <span class="text-[9px] uppercase text-gray-400 tracking-widest">Phone 1 / WhatsApp</span>
+                                <a href="tel:+255754494949" class="text-lg font-bold hover:text-yellow-500 transition">+255 754 494949</a>
+                                <a href="https://wa.me/255754494949" target="_blank" class="text-xs bg-green-500 text-white w-fit px-3 py-1 rounded-full"><i class="fa-brands fa-whatsapp"></i> Chat</a>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col space-y-3">
+                                <span class="text-[9px] uppercase text-gray-400 tracking-widest">Phone 2 / WhatsApp</span>
+                                <a href="tel:+255781125071" class="text-lg font-bold hover:text-yellow-500 transition">+255 781 125 071</a>
+                                <a href="https://wa.me/255781125071" target="_blank" class="text-xs bg-green-500 text-white w-fit px-3 py-1 rounded-full"><i class="fa-brands fa-whatsapp"></i> Chat</a>
+                            </div>
                         </div>
 
                         <div class="pt-8 border-t border-gray-100">
@@ -129,10 +131,10 @@
                         <div class="pt-8">
                             <h3 class="artist-font text-[10px] tracking-[0.4em] uppercase mb-6 text-yellow-500">Social Networks</h3>
                             <div class="flex flex-wrap gap-4">
-                                <a href="#" class="w-12 h-12 bg-white rounded-lg shadow flex items-center justify-center text-xl hover:bg-black hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
-                                <a href="#" class="w-12 h-12 bg-white rounded-lg shadow flex items-center justify-center text-xl hover:bg-black hover:text-white transition"><i class="fa-brands fa-tiktok"></i></a>
-                                <a href="#" class="w-12 h-12 bg-white rounded-lg shadow flex items-center justify-center text-xl hover:bg-black hover:text-white transition"><i class="fa-brands fa-youtube"></i></a>
-                                <a href="#" class="w-12 h-12 bg-white rounded-lg shadow flex items-center justify-center text-xl hover:bg-black hover:text-white transition"><i class="fa-brands fa-facebook"></i></a>
+                                <a href="#" title="Instagram: Noone33989briansimbo333@gmail.com" class="w-12 h-12 bg-white rounded-lg shadow flex items-center justify-center text-xl hover:bg-black hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="https://www.tiktok.com/@Brianartstudio1" target="_blank" title="TikTok: @Brianartstudio1" class="w-12 h-12 bg-white rounded-lg shadow flex items-center justify-center text-xl hover:bg-black hover:text-white transition"><i class="fa-brands fa-tiktok"></i></a>
+                                <a href="https://www.youtube.com/@BrianEartstudio" target="_blank" title="YouTube: Brian E art studio" class="w-12 h-12 bg-white rounded-lg shadow flex items-center justify-center text-xl hover:bg-black hover:text-white transition"><i class="fa-brands fa-youtube"></i></a>
+                                <a href="https://www.facebook.com/search/top?q=Brian%20Erick" target="_blank" title="Facebook: Brian Erick" class="w-12 h-12 bg-white rounded-lg shadow flex items-center justify-center text-xl hover:bg-black hover:text-white transition"><i class="fa-brands fa-facebook"></i></a>
                             </div>
                         </div>
                     </div>
@@ -140,7 +142,7 @@
 
                 <div class="bg-white p-10 md:p-16 rounded-[2.5rem] shadow-2xl border border-gray-50 reveal">
                     <h2 class="artist-font text-xl uppercase mb-10 tracking-widest">Inquiry Form</h2>
-                    <form action="https://formspree.io/f/YOUR_ID" method="POST" class="space-y-8">
+                    <form action="https://formspree.io/f/YOUR_ID_HERE" method="POST" class="space-y-8">
                         <input type="text" name="name" placeholder="YOUR NAME" required class="art-input w-full py-4 uppercase text-xs tracking-widest">
                         <input type="email" name="email" placeholder="YOUR EMAIL" required class="art-input w-full py-4 uppercase text-xs tracking-widest">
                         <textarea name="message" rows="4" placeholder="HOW CAN I HELP YOU?" required class="art-input w-full py-4 uppercase text-xs tracking-widest resize-none"></textarea>
@@ -170,12 +172,14 @@
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
-            menu.classList.toggle('hidden');
-            menu.classList.toggle('flex');
             
-            if (menu.classList.contains('flex')) {
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
                 icon.classList.replace('fa-bars-staggered', 'fa-xmark');
             } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
                 icon.classList.replace('fa-xmark', 'fa-bars-staggered');
             }
         }
