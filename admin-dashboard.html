@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Bes Artist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; }
+        .artist-font { font-family: 'Unbounded', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-5xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="artist-font text-xl md:text-2xl uppercase text-yellow-400">Control <span class="text-white">Room</span></h1>
+                <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mt-1">Bes Artist Administrative Portal</p>
+            </div>
+            <button onclick="logout()" class="bg-red-600/20 text-red-500 border border-red-600/30 px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-red-600 hover:text-white transition">Exit</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <div class="glass p-8 rounded-[40px]">
+                    <h2 class="artist-font text-xs uppercase mb-8 flex items-center gap-3">
+                        <span class="w-2 h-2 bg-yellow-400 rounded-full animate-ping"></span>
+                        Publish New Artwork
+                    </h2>
+                    
+                    <form id="upload-form" class="space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <input type="text" id="title" placeholder="ART TITLE" required class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
+                            <input type="text" id="category" placeholder="CATEGORY (e.g., Pencil Art)" class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
+                        </div>
+                        <input type="url" id="image_url" placeholder="DIRECT IMAGE LINK (URL)" required class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <input type="number" id="price" placeholder="REGULAR PRICE" required class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
+                            <input type="number" id="sale_price" placeholder="SALE PRICE" class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
+                            <div class="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-center justify-between">
+                                <span class="text-[10px] font-bold uppercase text-gray-400">On Sale?</span>
+                                <input type="checkbox" id="is_sale" class="w-6 h-6 accent-yellow-400">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-yellow-400 text-black py-6 rounded-2xl artist-font text-[10px] uppercase tracking-[0.4em] hover:bg-white transition-all shadow-2xl shadow-yellow-400/10">
+                            Launch Artwork to Gallery
+                        </button>
+                    </form>
+                    <p id="status" class="mt-4 text-center text-[10px] uppercase font-bold text-yellow-400"></p>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1">
+                <div class="glass p-8 rounded-[40px] h-full">
+                    <h2 class="artist-font text-xs uppercase mb-8">Subscribers List</h2>
+                    <div id="sub-list" class="space-y-3 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
+                        <p class="text-[10px] text-gray-600 uppercase">Loading emails...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script>
+        const _supabaseURL = 'https://czifyhpvtdesbwpofbmv.supabase.co';
+        const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
+        const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
+
+        // LINDA DASHBOARD: Usipo-login huingii
+        async function checkAuth() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) {
+                window.location.href = 'gallery.html'; // Rudisha gallery kama huna ruhusa
+            } else {
+                fetchSubs();
+            }
+        }
+        checkAuth();
+
+        // LOGOUT
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'gallery.html';
+        }
+
+        // UPLOAD ART
+        document.getElementById('upload-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const status = document.getElementById('status');
+            status.innerText = "Processing...";
+
+            const payload = {
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                image_url: document.getElementById('image_url').value,
+                price: document.getElementById('price').value,
+                sale_price: document.getElementById('sale_price').value || null,
+                is_sale: document.getElementById('is_sale').checked
+            };
+
+            const { error } = await supabaseClient.from('gallery').insert([payload]);
+
+            if (error) {
+                status.innerText = "Error: " + error.message;
+            } else {
+                status.innerText = "Artwork Published Successfully!";
+                document.getElementById('upload-form').reset();
+            }
+        });
+
+        // FETCH SUBSCRIBERS
+        async function fetchSubs() {
+            const subList = document.getElementById('sub-list');
+            const { data, error } = await supabaseClient.from('subscribers').select('email, created_at').order('created_at', { ascending: false });
+            
+            if (data && data.length > 0) {
+                subList.innerHTML = data.map(sub => `
+                    <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                        <p class="text-[10px] font-bold text-white mb-1">${sub.email}</p>
+                        <p class="text-[8px] text-gray-500 uppercase">${new Date(sub.created_at).toLocaleDateString()}</p>
+                    </div>
+                `).join('');
+            } else {
+                subList.innerHTML = '<p class="text-[10px] text-gray-600 uppercase">No subscribers yet.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
