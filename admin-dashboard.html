@@ -3,68 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Bes Artist</title>
+    <title>Bes Artist | Admin Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;900&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; }
+        body { font-family: 'Inter', sans-serif; background: #050505; color: #e5e5e5; }
         .artist-font { font-family: 'Unbounded', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .neo-card { border-radius: 30px; transition: all 0.3s ease; }
+        .neo-card:hover { border-color: #facc15; box-shadow: 0 0 30px rgba(250, 204, 21, 0.1); }
+        .input-dark { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; width: 100%; outline: none; transition: 0.3s; }
+        .input-dark:focus { border-color: #facc15; background: rgba(255,255,255,0.08); }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #facc15; border-radius: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="min-h-screen pb-20">
 
-    <div class="max-w-5xl mx-auto">
-        <div class="flex justify-between items-center mb-10">
-            <div>
-                <h1 class="artist-font text-xl md:text-2xl uppercase text-yellow-400">Control <span class="text-white">Room</span></h1>
-                <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mt-1">Bes Artist Administrative Portal</p>
+    <nav class="border-b border-white/5 py-6 px-6 mb-10 sticky top-0 bg-[#050505]/80 backdrop-blur-xl z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-black">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h1 class="artist-font text-lg uppercase tracking-tighter">Bes <span class="text-yellow-400">Admin</span></h1>
             </div>
-            <button onclick="logout()" class="bg-red-600/20 text-red-500 border border-red-600/30 px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-red-600 hover:text-white transition">Exit</button>
+            <div class="flex items-center gap-6">
+                <a href="gallery.html" class="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-white transition">View Store</a>
+                <button onclick="logout()" class="text-[10px] font-bold uppercase tracking-widest bg-red-600/10 text-red-500 px-6 py-2 rounded-full border border-red-500/20 hover:bg-red-600 hover:text-white transition">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="glass p-8 neo-card">
+                <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-2">Total Artworks</p>
+                <h2 id="total-art" class="artist-font text-4xl">0</h2>
+            </div>
+            <div class="glass p-8 neo-card">
+                <p class="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-2">Subscribers</p>
+                <h2 id="total-subs" class="artist-font text-4xl">0</h2>
+            </div>
+            <div class="glass p-8 neo-card border-yellow-400/20">
+                <p class="text-[10px] uppercase tracking-[0.3em] text-yellow-400 mb-2">Items on Sale</p>
+                <h2 id="total-sales" class="artist-font text-4xl text-yellow-400">0</h2>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2">
-                <div class="glass p-8 rounded-[40px]">
-                    <h2 class="artist-font text-xs uppercase mb-8 flex items-center gap-3">
-                        <span class="w-2 h-2 bg-yellow-400 rounded-full animate-ping"></span>
-                        Publish New Artwork
-                    </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            
+            <div class="lg:col-span-8">
+                <div class="glass p-10 neo-card mb-10">
+                    <h3 class="artist-font text-sm uppercase mb-10 flex items-center gap-4">
+                        <i class="fa-solid fa-plus-circle text-yellow-400"></i> Upload New Artwork
+                    </h3>
                     
-                    <form id="upload-form" class="space-y-5">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <input type="text" id="title" placeholder="ART TITLE" required class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
-                            <input type="text" id="category" placeholder="CATEGORY (e.g., Pencil Art)" class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
+                    <form id="upload-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <input type="text" id="title" placeholder="ART TITLE" required class="input-dark">
+                            <input type="text" id="category" placeholder="CATEGORY" class="input-dark">
                         </div>
-                        <input type="url" id="image_url" placeholder="DIRECT IMAGE LINK (URL)" required class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <input type="number" id="price" placeholder="REGULAR PRICE" required class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
-                            <input type="number" id="sale_price" placeholder="SALE PRICE" class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-yellow-400 text-sm">
-                            <div class="bg-white/5 border border-white/10 p-5 rounded-2xl flex items-center justify-between">
-                                <span class="text-[10px] font-bold uppercase text-gray-400">On Sale?</span>
-                                <input type="checkbox" id="is_sale" class="w-6 h-6 accent-yellow-400">
+                        <div class="relative">
+                            <input type="url" id="image_url" placeholder="IMAGE DIRECT LINK (URL)" oninput="updatePreview()" required class="input-dark">
+                            <div id="preview-box" class="mt-4 hidden h-48 rounded-2xl overflow-hidden border border-white/10">
+                                <img id="image-preview" src="" class="w-full h-full object-cover">
                             </div>
                         </div>
-
-                        <button type="submit" class="w-full bg-yellow-400 text-black py-6 rounded-2xl artist-font text-[10px] uppercase tracking-[0.4em] hover:bg-white transition-all shadow-2xl shadow-yellow-400/10">
-                            Launch Artwork to Gallery
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <input type="number" id="price" placeholder="PRICE (Tsh)" required class="input-dark">
+                            <input type="number" id="sale_price" placeholder="SALE PRICE" class="input-dark">
+                            <div class="input-dark flex justify-between items-center">
+                                <span class="text-[10px] font-bold text-gray-500">SALE MODE</span>
+                                <input type="checkbox" id="is_sale" class="w-5 h-5 accent-yellow-400">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-yellow-400 text-black py-6 rounded-2xl artist-font text-[11px] uppercase tracking-[0.4em] hover:bg-white transition-all shadow-xl shadow-yellow-400/10">
+                            Publish Masterpiece
                         </button>
                     </form>
-                    <p id="status" class="mt-4 text-center text-[10px] uppercase font-bold text-yellow-400"></p>
                 </div>
-            </div>
 
-            <div class="lg:col-span-1">
-                <div class="glass p-8 rounded-[40px] h-full">
-                    <h2 class="artist-font text-xs uppercase mb-8">Subscribers List</h2>
-                    <div id="sub-list" class="space-y-3 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
-                        <p class="text-[10px] text-gray-600 uppercase">Loading emails...</p>
+                <div class="glass p-10 neo-card">
+                    <h3 class="artist-font text-sm uppercase mb-8">Manage Inventory</h3>
+                    <div id="art-list" class="space-y-4">
+                        <p class="text-xs text-gray-500">Fetching art list...</p>
                     </div>
                 </div>
             </div>
+
+            <div class="lg:col-span-4">
+                <div class="glass p-8 neo-card sticky top-32">
+                    <h3 class="artist-font text-sm uppercase mb-8 flex justify-between items-center">
+                        Audience <span class="text-[10px] bg-white/5 px-3 py-1 rounded-full text-yellow-400" id="sub-count">0</span>
+                    </h3>
+                    <div id="sub-list" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                        </div>
+                </div>
+            </div>
+
         </div>
-    </div>
+    </main>
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
@@ -72,29 +114,64 @@
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
 
-        // LINDA DASHBOARD: Usipo-login huingii
         async function checkAuth() {
             const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                window.location.href = 'gallery.html'; // Rudisha gallery kama huna ruhusa
+            if (!session) window.location.href = 'gallery.html';
+            loadData();
+        }
+
+        function updatePreview() {
+            const url = document.getElementById('image_url').value;
+            const previewBox = document.getElementById('preview-box');
+            const previewImg = document.getElementById('image-preview');
+            if(url) {
+                previewBox.classList.remove('hidden');
+                previewImg.src = url;
             } else {
-                fetchSubs();
+                previewBox.classList.add('hidden');
             }
         }
-        checkAuth();
 
-        // LOGOUT
-        async function logout() {
-            await supabaseClient.auth.signOut();
-            window.location.href = 'gallery.html';
+        async function loadData() {
+            // Stats
+            const { data: art } = await supabaseClient.from('gallery').select('*');
+            const { data: subs } = await supabaseClient.from('subscribers').select('*');
+            
+            document.getElementById('total-art').innerText = art ? art.length : 0;
+            document.getElementById('total-subs').innerText = subs ? subs.length : 0;
+            document.getElementById('sub-count').innerText = subs ? subs.length : 0;
+            document.getElementById('total-sales').innerText = art ? art.filter(a => a.is_sale).length : 0;
+
+            // Render Art List
+            const artList = document.getElementById('art-list');
+            artList.innerHTML = art.map(a => `
+                <div class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 group">
+                    <div class="flex items-center gap-4">
+                        <img src="${a.image_url}" class="w-12 h-12 rounded-lg object-cover">
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-wider">${a.title}</p>
+                            <p class="text-[8px] text-gray-500 uppercase">${a.category} • Tsh ${a.price}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteArt('${a.id}')" class="text-gray-600 hover:text-red-500 p-2"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            `).join('');
+
+            // Render Subs
+            const subList = document.getElementById('sub-list');
+            subList.innerHTML = subs.map(s => `
+                <div class="p-4 bg-white/5 rounded-2xl border border-white/5">
+                    <p class="text-[10px] font-bold">${s.email}</p>
+                    <p class="text-[8px] text-gray-600 uppercase mt-1">${new Date(s.created_at).toLocaleDateString()}</p>
+                </div>
+            `).join('');
         }
 
-        // UPLOAD ART
         document.getElementById('upload-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const status = document.getElementById('status');
-            status.innerText = "Processing...";
-
+            const btn = e.target.querySelector('button');
+            btn.innerText = "UPLOADING...";
+            
             const payload = {
                 title: document.getElementById('title').value,
                 category: document.getElementById('category').value,
@@ -104,32 +181,26 @@
                 is_sale: document.getElementById('is_sale').checked
             };
 
-            const { error } = await supabaseClient.from('gallery').insert([payload]);
-
-            if (error) {
-                status.innerText = "Error: " + error.message;
-            } else {
-                status.innerText = "Artwork Published Successfully!";
-                document.getElementById('upload-form').reset();
-            }
+            await supabaseClient.from('gallery').insert([payload]);
+            btn.innerText = "PUBLISH MASTERPIECE";
+            document.getElementById('upload-form').reset();
+            document.getElementById('preview-box').classList.add('hidden');
+            loadData();
         });
 
-        // FETCH SUBSCRIBERS
-        async function fetchSubs() {
-            const subList = document.getElementById('sub-list');
-            const { data, error } = await supabaseClient.from('subscribers').select('email, created_at').order('created_at', { ascending: false });
-            
-            if (data && data.length > 0) {
-                subList.innerHTML = data.map(sub => `
-                    <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                        <p class="text-[10px] font-bold text-white mb-1">${sub.email}</p>
-                        <p class="text-[8px] text-gray-500 uppercase">${new Date(sub.created_at).toLocaleDateString()}</p>
-                    </div>
-                `).join('');
-            } else {
-                subList.innerHTML = '<p class="text-[10px] text-gray-600 uppercase">No subscribers yet.</p>';
+        async function deleteArt(id) {
+            if(confirm('Je, unataka kufuta kabisa mchoro huu?')) {
+                await supabaseClient.from('gallery').delete().eq('id', id);
+                loadData();
             }
         }
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'gallery.html';
+        }
+
+        checkAuth();
     </script>
 </body>
 </html>
