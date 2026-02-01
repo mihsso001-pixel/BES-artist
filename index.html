@@ -80,13 +80,19 @@
         </div>
     </nav>
 
-    <section class="pt-56 pb-10 px-6 text-center">
+    <section class="pt-56 pb-4 px-6 text-center">
         <span class="inline-block py-1 px-4 mb-6 text-[10px] font-bold tracking-[0.4em] bg-black text-white rounded-full uppercase">Official Portfolio</span>
         <h1 class="artist-font text-5xl md:text-8xl leading-[0.9] uppercase">
             BES <br> <span class="outline-text">ARTIST.</span>
         </h1>
         <p class="max-w-lg mx-auto text-gray-500 mt-6 text-sm uppercase tracking-widest font-bold">Brian Erick | Contemporary Visual Artist</p>
     </section>
+
+    <div class="pt-6 pb-12 text-center">
+        <a href="gallery.html" class="bg-black text-white px-12 py-5 text-xs font-bold tracking-[0.4em] hover:bg-yellow-400 hover:text-black transition uppercase border border-black shadow-2xl">
+            Explore Gallery
+        </a>
+    </div>
 
     <section id="tiktok" class="py-12 overflow-hidden">
         <div class="max-w-7xl mx-auto px-6">
@@ -97,12 +103,6 @@
             <p class="text-center col-span-full text-gray-400 italic">Curating visual experiences...</p>
         </div>
     </section>
-
-    <div class="py-10 text-center">
-        <a href="gallery.html" class="bg-black text-white px-12 py-5 text-xs font-bold tracking-[0.4em] hover:bg-yellow-400 hover:text-black transition uppercase border border-black shadow-2xl">
-            Explore Gallery
-        </a>
-    </div>
 
     <footer id="wasiliana" class="bg-black text-white py-20 px-6 text-center border-t border-gray-800 mt-20">
         <div class="max-w-7xl mx-auto">
@@ -138,7 +138,6 @@
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-        // NAVIGATION TOGGLE
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
@@ -154,7 +153,6 @@
             }
         }
 
-        // SUPABASE CONFIG
         const _supabaseURL = 'https://czifyhpvtdesbwpofbmv.supabase.co';
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
@@ -177,7 +175,6 @@
                         </div>`;
                 });
 
-                // Load TikTok embed script
                 const script = document.createElement('script');
                 script.src = "https://www.tiktok.com/embed.js";
                 script.async = true;
