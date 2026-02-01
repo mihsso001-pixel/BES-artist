@@ -80,7 +80,7 @@
         </div>
     </nav>
 
-    <section class="pt-56 pb-4 px-6 text-center">
+    <section class="pt-56 pb-10 px-6 text-center">
         <span class="inline-block py-1 px-4 mb-6 text-[10px] font-bold tracking-[0.4em] bg-black text-white rounded-full uppercase">Official Portfolio</span>
         <h1 class="artist-font text-5xl md:text-8xl leading-[0.9] uppercase">
             BES <br> <span class="outline-text">ARTIST.</span>
@@ -88,7 +88,7 @@
         <p class="max-w-lg mx-auto text-gray-500 mt-6 text-sm uppercase tracking-widest font-bold">Brian Erick | Contemporary Visual Artist</p>
     </section>
 
-    <div class="pt-6 pb-12 text-center">
+    <div class="py-10 text-center">
         <a href="gallery.html" class="bg-black text-white px-12 py-5 text-xs font-bold tracking-[0.4em] hover:bg-yellow-400 hover:text-black transition uppercase border border-black shadow-2xl">
             Explore Gallery
         </a>
@@ -113,7 +113,7 @@
                     <i class="fa-brands fa-youtube"></i>
                 </a>
 
-                <a href="https://www.tiktok.com/@Brianartstudio1" target="_blank" title="TikTok" class="text-3xl hover:text-pink-500 transition">
+                <a href="https://www.tiktok.com/@brianartstudio1" target="_blank" title="TikTok" class="text-3xl hover:text-pink-500 transition">
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
 
@@ -141,7 +141,6 @@
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
-            
             if (menu.classList.contains('hidden')) {
                 menu.classList.remove('hidden');
                 menu.classList.add('flex');
@@ -167,10 +166,11 @@
             if (data && data.length > 0) {
                 container.innerHTML = ''; 
                 data.forEach(item => {
+                    // Fixed TikTok Embed Links to lowercase
                     container.innerHTML += `
                         <div class="video-card bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 p-2">
-                            <blockquote class="tiktok-embed" cite="${item.video_url}" data-video-id="${item.video_id}" style="width: 100%;">
-                                <section><a target="_blank" href="${item.video_url}">@Brianartstudio1</a></section>
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@brianartstudio1/video/${item.video_id}" data-video-id="${item.video_id}" style="width: 100%;">
+                                <section><a target="_blank" href="https://www.tiktok.com/@brianartstudio1">@brianartstudio1</a></section>
                             </blockquote>
                         </div>`;
                 });
