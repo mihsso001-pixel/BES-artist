@@ -96,6 +96,17 @@
             </div>
 
             <div class="glass p-10 rounded-[40px]">
+                <h3 class="artist-font text-xs uppercase mb-8 flex items-center gap-3">
+                    <i class="fa-brands fa-tiktok text-pink-500"></i> TikTok Creative Feed
+                </h3>
+                <form id="tiktok-form" class="flex flex-col md:flex-row gap-4 mb-10">
+                    <input type="text" id="video_id_input" placeholder="PASTE TIKTOK VIDEO ID" required class="input-pro text-sm flex-1">
+                    <button type="submit" id="add-video-btn" class="bg-white text-black px-10 py-4 rounded-xl font-black text-[10px] uppercase hover:bg-yellow-400 transition-colors">Add Video</button>
+                </form>
+                <div id="admin-tiktok-list" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+            </div>
+
+            <div class="glass p-10 rounded-[40px]">
                 <h3 class="artist-font text-xs uppercase mb-8 flex justify-between items-center">
                     <span>Live Inventory</span>
                     <span class="text-[9px] text-gray-500" id="item-count">0 Items</span>
@@ -135,27 +146,15 @@
             else loadData();
         }
 
-        // --- UPDATED EMAIL ALL FUNCTION ---
         async function emailAll() {
             const { data: subs, error } = await supabaseClient.from('subscribers').select('email');
-            
             if (error || !subs || subs.length === 0) {
                 alert("Vault Alert: No collectors found in the database.");
                 return;
             }
-
             const emails = subs.map(s => s.email).join(',');
-            
             const subject = encodeURIComponent("Bes Artist | Exclusive New Masterpiece Release");
-            const body = encodeURIComponent(
-                "Dear Collector,\n\n" +
-                "A new masterpiece has just been unveiled in the showroom. You are invited to be among the first to experience this visual narrative.\n\n" +
-                "View the collection here:\n" +
-                "https://github.com/mihsso001-pixel/BES-artist/\n\n" +
-                "Best Regards,\n" +
-                "Bes Artist Studio"
-            );
-            
+            const body = encodeURIComponent("Dear Collector,\n\nA new masterpiece has just been unveiled click >> https://mihsso001-pixel.github.io/BES-artist/ to view it \n\nAll regards \n\n BES artist.");
             window.location.href = `mailto:${emails}?subject=${subject}&body=${body}`;
         }
 
@@ -176,6 +175,7 @@
         async function loadData() {
             const { data: arts } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
             const { data: subs } = await supabaseClient.from('subscribers').select('*').order('created_at', { ascending: false });
+            const { data: vids } = await supabaseClient.from('videos').select('*').order('created_at', { ascending: false });
 
             document.getElementById('item-count').innerText = `${arts ? arts.length : 0} Artworks`;
             
@@ -210,6 +210,38 @@
                     <a href="mailto:${s.email}" class="text-yellow-400"><i class="fa-solid fa-paper-plane"></i></a>
                 </div>
             `).join('') : '';
+
+            const videoListDiv = document.getElementById('admin-tiktok-list');
+            videoListDiv.innerHTML = vids ? vids.map(v => `
+                <div class="bg-white/5 p-4 rounded-2xl border border-white/10 text-center relative group">
+                    <p class="text-[8px] opacity-40 mb-2 truncate">${v.video_id}</p>
+                    <button onclick="deleteVideo('${v.id}')" class="text-red-500 hover:text-white text-[9px] font-bold uppercase">
+                        <i class="fa-solid fa-trash-can"></i> Futa
+                    </button>
+                </div>
+            `).join('') : '';
+        }
+
+        document.getElementById('tiktok-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('add-video-btn');
+            const videoId = document.getElementById('video_id_input').value.trim();
+            btn.innerText = "SAVING...";
+            btn.disabled = true;
+            const { error } = await supabaseClient.from('videos').insert([{ video_id: videoId }]);
+            if(!error) {
+                document.getElementById('video_id_input').value = '';
+                loadData();
+            } else { alert(error.message); }
+            btn.innerText = "Add Video";
+            btn.disabled = false;
+        });
+
+        async function deleteVideo(id) {
+            if(confirm('Futa video hii?')) {
+                const { error } = await supabaseClient.from('videos').delete().eq('id', id);
+                if(!error) loadData();
+            }
         }
 
         document.getElementById('upload-form').addEventListener('submit', async (e) => {
@@ -217,15 +249,12 @@
             const btn = document.getElementById('submit-btn');
             btn.innerText = "UPLOADING MASTERPIECE...";
             btn.disabled = true;
-
             try {
                 const mainFile = document.getElementById('image_file').files[0];
                 if(!mainFile) throw new Error("Please upload the final artwork image.");
-
                 const mainUrl = await uploadFile(mainFile);
                 const s1Url = await uploadFile(document.getElementById('stage_1_file').files[0]);
                 const s2Url = await uploadFile(document.getElementById('stage_2_file').files[0]);
-
                 const { error } = await supabaseClient.from('gallery').insert([{
                     title: document.getElementById('title').value,
                     category: document.getElementById('category').value,
@@ -239,17 +268,11 @@
                     stock_status: document.getElementById('stock_status').value,
                     is_sale: document.getElementById('sale_price').value ? true : false
                 }]);
-
                 if (error) throw error;
-                alert("Masterpiece has been added to the showroom.");
+                alert("Masterpiece added.");
                 location.reload();
-
-            } catch (err) {
-                alert("Vault Error: " + err.message);
-            } finally {
-                btn.innerText = "Release Internationally";
-                btn.disabled = false;
-            }
+            } catch (err) { alert("Vault Error: " + err.message); }
+            finally { btn.innerText = "Release Internationally"; btn.disabled = false; }
         });
 
         async function toggleStatus(id, newStatus) {
