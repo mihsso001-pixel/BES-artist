@@ -88,10 +88,20 @@
         <p class="max-w-lg mx-auto text-gray-500 mt-6 text-sm uppercase tracking-widest font-bold">Brian Erick | Contemporary Visual Artist</p>
     </section>
 
-    <div class="py-10 text-center">
-        <a href="gallery.html" class="bg-black text-white px-12 py-5 text-xs font-bold tracking-[0.4em] hover:bg-yellow-400 hover:text-black transition uppercase border border-black shadow-2xl">
+    <div class="py-10 text-center flex flex-col md:flex-row justify-center items-center gap-10 px-6">
+        <a href="gallery.html" class="bg-black text-white px-12 py-5 text-xs font-bold tracking-[0.4em] hover:bg-yellow-400 hover:text-black transition uppercase border border-black shadow-2xl w-full md:w-72">
             Explore Gallery
         </a>
+
+        <div class="relative w-full md:w-72 group">
+            <form id="collector-form" class="flex flex-col gap-2">
+                <input type="email" id="collector-email" placeholder="ENTER EMAIL FOR UPDATES" required 
+                    class="bg-transparent border-b-2 border-black py-4 px-2 text-[10px] font-bold tracking-widest outline-none focus:border-yellow-400 transition-colors uppercase w-full">
+                <button type="submit" id="join-btn" class="text-[9px] font-black tracking-[0.3em] uppercase hover:text-yellow-500 transition text-left pl-2 mt-2">
+                    Join Collectors <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                </button>
+            </form>
+        </div>
     </div>
 
     <section id="tiktok" class="py-12 overflow-hidden">
@@ -112,19 +122,15 @@
                 <a href="https://www.youtube.com/@BrianErick-arts" target="_blank" title="YouTube" class="text-3xl hover:text-red-600 transition">
                     <i class="fa-brands fa-youtube"></i>
                 </a>
-
                 <a href="https://www.tiktok.com/@brianartstudio1" target="_blank" title="TikTok" class="text-3xl hover:text-pink-500 transition">
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
-
                 <a href="https://www.instagram.com/Noone33989" target="_blank" title="Instagram" class="text-3xl hover:text-pink-600 transition">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
-
                 <a href="https://www.facebook.com/search/top?q=Brian%20Erick" target="_blank" title="Facebook" class="text-3xl hover:text-blue-600 transition">
                     <i class="fa-brands fa-facebook"></i>
                 </a>
-
                 <a href="https://wa.me/255754494949" target="_blank" title="WhatsApp" class="text-3xl hover:text-green-500 transition">
                     <i class="fa-brands fa-whatsapp"></i>
                 </a>
@@ -138,6 +144,7 @@
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
+        // NAVIGATION TOGGLE
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
@@ -152,10 +159,42 @@
             }
         }
 
+        // SUPABASE CONFIGURATION
         const _supabaseURL = 'https://czifyhpvtdesbwpofbmv.supabase.co';
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
 
+        // JOIN COLLECTORS FUNCTIONALITY
+        document.getElementById('collector-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('collector-email');
+            const joinBtn = document.getElementById('join-btn');
+            const email = emailInput.value;
+
+            joinBtn.innerText = "LINKING TO VAULT...";
+            joinBtn.disabled = true;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('subscribers')
+                    .insert([{ email: email }]);
+
+                if (error) {
+                    if (error.code === '23505') throw new Error("This email is already in the vault.");
+                    throw error;
+                }
+
+                alert("Welcome to the Vault! You will now receive exclusive updates.");
+                emailInput.value = '';
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                joinBtn.innerHTML = 'Join Collectors <i class="fa-solid fa-arrow-right ml-2"></i>';
+                joinBtn.disabled = false;
+            }
+        });
+
+        // FETCH TIKTOK VIDEOS
         async function fetchVideos() {
             const container = document.getElementById('tiktok-container');
             const { data, error } = await supabaseClient
@@ -166,7 +205,6 @@
             if (data && data.length > 0) {
                 container.innerHTML = ''; 
                 data.forEach(item => {
-                    // Fixed TikTok Embed Links to lowercase
                     container.innerHTML += `
                         <div class="video-card bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 p-2">
                             <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@brianartstudio1/video/${item.video_id}" data-video-id="${item.video_id}" style="width: 100%;">
