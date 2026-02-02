@@ -28,6 +28,7 @@
             width: 70px; height: 70px; border-radius: 50%; object-fit: cover; 
             border: 2px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             cursor: pointer; transition: transform 0.3s;
+            -webkit-user-select: none; user-select: none;
         }
 
         .art-card { transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); cursor: pointer; }
@@ -100,8 +101,7 @@
                 </div>
             </div>
 
-            <div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-32">
-                </div>
+            <div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-32"></div>
         </div>
     </main>
 
@@ -109,7 +109,6 @@
         <div class="max-w-2xl mx-auto">
             <h2 class="artist-font text-3xl md:text-5xl mb-8 uppercase">Collector's <span class="text-yellow-400">Circle</span></h2>
             <p class="text-gray-400 mb-12 tracking-widest uppercase text-[10px] font-bold">Join the newsletter for exclusive early access to new collections.</p>
-            
             <form id="newsletter-form" class="flex flex-col sm:flex-row gap-4">
                 <input type="email" id="subscriber-email" placeholder="EMAIL ADDRESS" required class="flex-1 bg-white/5 border border-white/10 px-8 py-5 rounded-2xl focus:border-yellow-400 outline-none text-sm text-white">
                 <button type="submit" class="bg-yellow-400 text-black px-12 py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-white transition-all">Join Now</button>
@@ -158,10 +157,7 @@
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
 
-        let allArts = [];
-        let studioImages = [];
-        let currentStageIdx = 0;
-        let currentItem = null;
+        let allArts = [], studioImages = [], currentStageIdx = 0, currentItem = null;
 
         async function loadShop() {
             const { data } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
@@ -175,58 +171,44 @@
                 const isSold = item.stock_status === 'Sold Out';
                 const hasStages = item.stage_1_url || item.stage_2_url;
                 const symbol = item.currency === 'USD' ? '$' : 'Tsh';
-                const waText = encodeURIComponent(`Hello Bes Artist, I'm interested in "${item.title}".`);
-                const waLink = `https://wa.me/255754494949?text=${waText}`;
+                const waLink = `https://wa.me/255754494949?text=${encodeURIComponent('Interest: ' + item.title)}`;
 
                 return `
                     <div class="art-card bg-white rounded-[40px] overflow-hidden shadow-2xl border border-gray-100 relative group" onclick="openStudio('${item.id}')">
                         ${isSold ? '<div class="sold-banner">SOLD</div>' : ''}
                         ${item.is_sale && !isSold ? '<div class="absolute top-5 left-5 bg-red-600 text-white text-[9px] font-black px-4 py-1.5 rounded-full z-10">OFFER</div>' : ''}
                         ${hasStages ? '<div class="eye-trigger"><i class="fa-solid fa-eye text-sm"></i></div>' : ''}
-                        
                         <div class="h-[400px] md:h-[450px] overflow-hidden relative">
                             <img src="${item.image_url}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                             <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <span class="text-white artist-font text-[9px] tracking-[0.3em] border border-white/40 px-6 py-3 rounded-full uppercase">View Process</span>
                             </div>
                         </div>
-
                         <div class="p-8 md:p-10" onclick="event.stopPropagation()">
                             <div class="flex justify-between items-start mb-4">
                                 <div>
                                     <h3 class="artist-font text-[11px] uppercase tracking-wider mb-2">${item.title}</h3>
                                     <p class="text-[8px] text-gray-400 font-bold uppercase tracking-[0.2em]">${item.category}</p>
                                 </div>
-                                <div class="text-right text-xs font-black">
-                                    ${item.is_sale ? `<span class="text-red-600">${symbol} ${item.sale_price}</span>` : `${symbol} ${item.price}`}
-                                </div>
+                                <div class="text-right text-xs font-black">${item.is_sale ? `<span class="text-red-600">${symbol} ${item.sale_price}</span>` : `${symbol} ${item.price}`}</div>
                             </div>
-                            <p class="text-[10px] text-gray-500 italic mb-8 line-clamp-2">${item.description || 'Masterpiece by Brian Erick.'}</p>
+                            <p class="text-[10px] text-gray-500 italic mb-8 line-clamp-2">${item.description || 'Masterpiece.'}</p>
                             ${isSold ? `<button disabled class="w-full py-5 border border-gray-100 text-gray-300 rounded-2xl text-[9px] uppercase italic">Sold</button>` :
                             `<a href="${waLink}" target="_blank" class="block w-full text-center bg-black text-white py-5 rounded-2xl artist-font text-[9px] uppercase hover:bg-yellow-400 hover:text-black transition-all">Acquire</a>`}
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }).join('');
         }
 
-        // NEWSLETTER LOGIC (IRUDISHWA)
+        // Newsletter
         document.getElementById('newsletter-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const emailInput = document.getElementById('subscriber-email');
             const status = document.getElementById('news-status');
-            
             const { error } = await supabaseClient.from('subscribers').insert([{ email: emailInput.value }]);
-            
             status.classList.remove('hidden');
-            if (error) {
-                status.innerText = "Error: Email already exists or connection failed.";
-                status.classList.add('text-red-500');
-            } else {
-                status.innerText = "Welcome to the Inner Circle!";
-                status.classList.add('text-yellow-400');
-                emailInput.value = "";
-            }
+            if (error) { status.innerText = "Error or Email exists."; status.classList.add('text-red-500'); }
+            else { status.innerText = "Joined Successfully!"; status.classList.add('text-yellow-400'); emailInput.value = ""; }
         });
 
         function filterArt() {
@@ -235,13 +217,13 @@
             renderGrid(filtered);
         }
 
+        // Studio View
         function openStudio(id) {
             currentItem = allArts.find(a => a.id === id);
             studioImages = [];
             if(currentItem.stage_1_url) studioImages.push({url: currentItem.stage_1_url, label: "Stage 1: Sketch"});
             if(currentItem.stage_2_url) studioImages.push({url: currentItem.stage_2_url, label: "Stage 2: Process"});
             studioImages.push({url: currentItem.image_url, label: "Final Masterpiece"});
-            
             currentStageIdx = studioImages.length - 1;
             updateStudio();
             document.getElementById('studio-modal').style.display = 'flex';
@@ -262,12 +244,27 @@
         function prevStage() { if(currentStageIdx > 0) { currentStageIdx--; updateStudio(); } }
         function closeStudio() { document.getElementById('studio-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
 
-        // Auth & Navigation
+        // HOLD LOGO TO LOGIN (3 SECONDS)
         let logoTimer;
-        const logo = document.getElementById('secret-logo');
-        logo.addEventListener('mousedown', () => logoTimer = setTimeout(() => document.getElementById('admin-modal').style.display='flex', 3000));
-        logo.addEventListener('mouseup', () => clearTimeout(logoTimer));
-        function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
+        const secretLogo = document.getElementById('secret-logo');
+        const adminModal = document.getElementById('admin-modal');
+
+        const startTimer = (e) => {
+            e.preventDefault();
+            logoTimer = setTimeout(() => {
+                adminModal.style.display = 'flex';
+            }, 3000);
+        };
+
+        const clearTimer = () => clearTimeout(logoTimer);
+
+        secretLogo.addEventListener('mousedown', startTimer);
+        secretLogo.addEventListener('mouseup', clearTimer);
+        secretLogo.addEventListener('mouseleave', clearTimer);
+        secretLogo.addEventListener('touchstart', startTimer);
+        secretLogo.addEventListener('touchend', clearTimer);
+
+        function closeAdmin() { adminModal.style.display = 'none'; }
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
         document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
