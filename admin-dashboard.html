@@ -153,8 +153,15 @@
                 return;
             }
             const emails = subs.map(s => s.email).join(',');
-            const subject = encodeURIComponent("Bes Artist | Exclusive New Masterpiece Release");
-            const body = encodeURIComponent("Dear Collector,\n\nA new masterpiece has just been unveiled click >> https://mihsso001-pixel.github.io/BES-artist/ to view it \n\nAll regards \n\n BES artist.");
+            const subject = encodeURIComponent("🎨 Exclusive New Release | Bes Artist Studio");
+            const body = encodeURIComponent(
+                "Greetings Collector,\n\n" +
+                "A new masterpiece has just been unveiled in our digital showroom! We invite you to be among the first to experience this latest creation.\n\n" +
+                "Click the link below to view the artwork and continue your artistic journey with us:\n" +
+                "👉 https://github.com/mihsso001-pixel/BES-artist/\n\n" +
+                "Warm regards,\n" +
+                "Bes Artist Studio"
+            );
             window.location.href = `mailto:${emails}?subject=${subject}&body=${body}`;
         }
 
@@ -215,8 +222,8 @@
             videoListDiv.innerHTML = vids ? vids.map(v => `
                 <div class="bg-white/5 p-4 rounded-2xl border border-white/10 text-center relative group">
                     <p class="text-[8px] opacity-40 mb-2 truncate">${v.video_id}</p>
-                    <button onclick="deleteVideo('${v.id}')" class="text-red-500 hover:text-white text-[9px] font-bold uppercase">
-                        <i class="fa-solid fa-trash-can"></i> Futa
+                    <button onclick="deleteVideo('${v.id}')" class="text-red-500 hover:bg-white hover:bg-red-600 p-2 rounded-lg text-[9px] font-bold uppercase transition-colors">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Delete Permanent
                     </button>
                 </div>
             `).join('') : '';
@@ -226,21 +233,27 @@
             e.preventDefault();
             const btn = document.getElementById('add-video-btn');
             const videoId = document.getElementById('video_id_input').value.trim();
-            btn.innerText = "SAVING...";
+            btn.innerText = "SAVING TO DB...";
             btn.disabled = true;
+            
             const { error } = await supabaseClient.from('videos').insert([{ video_id: videoId }]);
+            
             if(!error) {
                 document.getElementById('video_id_input').value = '';
                 loadData();
-            } else { alert(error.message); }
+            } else { alert("Error adding video: " + error.message); }
             btn.innerText = "Add Video";
             btn.disabled = false;
         });
 
         async function deleteVideo(id) {
-            if(confirm('Futa video hii?')) {
+            if(confirm('Are you sure you want to delete this video permanently from the database?')) {
                 const { error } = await supabaseClient.from('videos').delete().eq('id', id);
-                if(!error) loadData();
+                if(!error) {
+                    loadData();
+                } else {
+                    alert("Error deleting from DB: " + error.message);
+                }
             }
         }
 
@@ -269,7 +282,7 @@
                     is_sale: document.getElementById('sale_price').value ? true : false
                 }]);
                 if (error) throw error;
-                alert("Masterpiece added.");
+                alert("Masterpiece added successfully.");
                 location.reload();
             } catch (err) { alert("Vault Error: " + err.message); }
             finally { btn.innerText = "Release Internationally"; btn.disabled = false; }
@@ -281,7 +294,7 @@
         }
 
         async function deleteArt(id) {
-            if(confirm('Kaka, ufute mchoro huu kabisa?')) {
+            if(confirm('Are you sure you want to delete this artwork permanently?')) {
                 const { error } = await supabaseClient.from('gallery').delete().eq('id', id);
                 if(!error) loadData();
             }
