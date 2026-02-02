@@ -46,6 +46,10 @@
                         <input type="text" id="category" placeholder="CATEGORY (e.g. Digital Art)" class="input-pro">
                     </div>
 
+                    <div class="grid grid-cols-1">
+                        <textarea id="description" placeholder="ARTWORK STORY / DESCRIPTION" rows="3" class="input-pro"></textarea>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <input type="url" id="image_url" placeholder="IMAGE LINK (URL)" class="input-pro">
                         <div class="relative">
@@ -180,6 +184,7 @@
                 const { error: tableError } = await supabaseClient.from('gallery').insert([{
                     title: document.getElementById('title').value,
                     category: document.getElementById('category').value,
+                    description: document.getElementById('description').value, // STORY IMEWEKWA HAPA
                     image_url: finalUrl,
                     price: document.getElementById('price').value,
                     sale_price: document.getElementById('sale_price').value || null,
