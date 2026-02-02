@@ -141,7 +141,7 @@
 
             const emails = subs.map(s => s.email).join(',');
             const subject = encodeURIComponent("Bes Artist | New Masterpiece Alert");
-            const body = encodeURIComponent("Habari Collector,\n\nKuna mchoro mpya umewekwa kwenye showroom sasa hivi. Karibu uwe wa kwanza kuutazama.\n\nTembelea Store hapa: https://besartist.com/gallery.html\n\nBest Regards,\nBes Artist.");
+            const body = encodeURIComponent("Habari Collector,\n\nThere is a new artistic work in  showroo just now. Welcome to look for it.\n\nVisit here: https://github.com/mihsso001-pixel/BES-artist/\n\nBest Regards,\nBes Artist.");
             
             // Inafungua barua pepe ikiwa imeweka emails zote kwenye sehemu ya wapokeaji (BCC is better but for simple trigger we use To)
             window.location.href = `mailto:${emails}?subject=${subject}&body=${body}`;
