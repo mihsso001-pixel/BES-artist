@@ -48,7 +48,6 @@
             letter-spacing: 5px; font-weight: 900; border: 1px solid #facc15;
         }
 
-        /* Pulse for view process icon */
         .eye-trigger {
             position: absolute; bottom: 20px; right: 20px;
             background: rgba(250, 204, 21, 0.95); width: 45px; height: 45px;
@@ -144,8 +143,9 @@
             <form id="admin-login-form" class="space-y-6">
                 <input type="email" id="admin-email" placeholder="ADMIN EMAIL" required class="w-full bg-white/5 p-5 rounded-2xl border border-white/10 outline-none focus:border-yellow-400 text-white transition">
                 <input type="password" id="admin-password" placeholder="SECRET KEY" required class="w-full bg-white/5 p-5 rounded-2xl border border-white/10 outline-none focus:border-yellow-400 text-white transition">
-                <button type="submit" class="w-full bg-yellow-400 text-black py-5 rounded-2xl artist-font text-[10px] uppercase tracking-[0.3em] font-black hover:bg-white transition-all duration-500">Unveil Dashboard</button>
+                <button type="submit" id="login-btn" class="w-full bg-yellow-400 text-black py-5 rounded-2xl artist-font text-[10px] uppercase tracking-[0.3em] font-black hover:bg-white transition-all duration-500">Unveil Dashboard</button>
             </form>
+            <p id="login-error" class="text-red-500 text-[10px] mt-4 text-center uppercase font-bold hidden"></p>
         </div>
     </div>
 
@@ -157,17 +157,52 @@
 
         let allArts = [], studioImages = [], currentStageIdx = 0, currentItem = null;
 
-        // HOLD LOGO LOGIC
+        // --- FIXED HOLD LOGIC ---
         let logoTimer;
         const secretLogo = document.getElementById('secret-logo');
-        const startTimer = (e) => { e.preventDefault(); logoTimer = setTimeout(() => document.getElementById('admin-modal').style.display='flex', 3000); };
+        const adminModal = document.getElementById('admin-modal');
+
+        const startTimer = (e) => { 
+            e.preventDefault(); 
+            logoTimer = setTimeout(() => {
+                adminModal.style.display = 'flex';
+            }, 3000); 
+        };
         const clearTimer = () => clearTimeout(logoTimer);
+
         secretLogo.addEventListener('mousedown', startTimer);
         secretLogo.addEventListener('mouseup', clearTimer);
-        secretLogo.addEventListener('touchstart', startTimer);
+        secretLogo.addEventListener('mouseleave', clearTimer);
+        secretLogo.addEventListener('touchstart', startTimer, {passive: false});
         secretLogo.addEventListener('touchend', clearTimer);
 
-        function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
+        function closeAdmin() { adminModal.style.display = 'none'; }
+
+        // --- FIXED ADMIN LOGIN LOGIC ---
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            const errorMsg = document.getElementById('login-error');
+            const btn = document.getElementById('login-btn');
+
+            btn.innerText = "VERIFYING...";
+            errorMsg.classList.add('hidden');
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                errorMsg.innerText = error.message;
+                errorMsg.classList.remove('hidden');
+                btn.innerText = "UNVEIL DASHBOARD";
+            } else {
+                // SUCCESS: Go to admin panel
+                window.location.href = 'admin_panel.html';
+            }
+        });
 
         async function loadShop() {
             const { data } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
