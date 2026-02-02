@@ -92,17 +92,23 @@
         <p class="max-w-lg mx-auto text-gray-500 mt-6 text-sm uppercase tracking-widest font-bold">Brian Erick | Contemporary Visual Artist</p>
     </section>
 
-    <div class="py-10 text-center flex flex-col md:flex-row justify-center items-center gap-10 px-6">
-        <a href="gallery.html" class="bg-black text-white px-12 py-5 text-xs font-bold tracking-[0.4em] hover:bg-yellow-400 hover:text-black transition uppercase border border-black shadow-2xl w-full md:w-72">
+    <div class="py-10 text-center flex flex-col md:flex-row justify-center items-center gap-6 px-6">
+        <a href="gallery.html" class="bg-black text-white px-10 py-5 text-xs font-bold tracking-[0.4em] hover:bg-yellow-400 hover:text-black transition uppercase border border-black shadow-2xl w-full md:w-80 flex items-center justify-center">
             Explore Gallery
         </a>
 
-        <div class="relative w-full md:w-72 group">
-            <form id="collector-form" class="flex flex-col gap-2">
-                <input type="email" id="collector-email" placeholder="ENTER EMAIL FOR UPDATES" required 
+        <a href="https://chat.whatsapp.com/KcCdA0it9Sc2t7gFUTZfX9" target="_blank" class="bg-[#25D366] text-white px-10 py-5 text-xs font-bold tracking-[0.2em] hover:bg-[#128C7E] transition uppercase shadow-2xl w-full md:w-80 flex items-center justify-center gap-3">
+            Join Community For More <i class="fa-brands fa-whatsapp text-xl"></i>
+        </a>
+    </div>
+
+    <div class="pb-10 flex justify-center px-6">
+        <div class="relative w-full md:w-[660px] group border-t border-gray-200 pt-8">
+            <form id="collector-form" class="flex flex-col md:flex-row gap-4 items-end">
+                <input type="email" id="collector-email" placeholder="ENTER EMAIL FOR EXCLUSIVE UPDATES" required 
                     class="bg-transparent border-b-2 border-black py-4 px-2 text-[10px] font-bold tracking-widest outline-none focus:border-yellow-400 transition-colors uppercase w-full">
-                <button type="submit" id="join-btn" class="text-[9px] font-black tracking-[0.3em] uppercase hover:text-yellow-500 transition text-left pl-2 mt-2">
-                    Join Collectors <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-2 transition-transform"></i>
+                <button type="submit" id="join-btn" class="text-[9px] font-black tracking-[0.3em] uppercase hover:text-yellow-500 transition whitespace-nowrap pb-4">
+                    Join Collectors <i class="fa-solid fa-arrow-right ml-2"></i>
                 </button>
             </form>
         </div>
@@ -148,7 +154,6 @@
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-        // NAVIGATION TOGGLE
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('menu-icon');
@@ -163,19 +168,17 @@
             }
         }
 
-        // SUPABASE CONFIGURATION
         const _supabaseURL = 'https://czifyhpvtdesbwpofbmv.supabase.co';
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
 
-        // JOIN COLLECTORS FUNCTIONALITY
         document.getElementById('collector-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const emailInput = document.getElementById('collector-email');
             const joinBtn = document.getElementById('join-btn');
             const email = emailInput.value;
 
-            joinBtn.innerText = "LINKING TO VAULT...";
+            joinBtn.innerText = "LINKING...";
             joinBtn.disabled = true;
 
             try {
@@ -184,11 +187,11 @@
                     .insert([{ email: email }]);
 
                 if (error) {
-                    if (error.code === '23505') throw new Error("This email is already in the vault.");
+                    if (error.code === '23505') throw new Error("Email already in vault.");
                     throw error;
                 }
 
-                alert("Welcome to the Vault! You will now receive exclusive updates.");
+                alert("Welcome to the Vault!");
                 emailInput.value = '';
             } catch (err) {
                 alert(err.message);
@@ -198,7 +201,6 @@
             }
         });
 
-        // FETCH TIKTOK VIDEOS
         async function fetchVideos() {
             const container = document.getElementById('tiktok-container');
             const { data, error } = await supabaseClient
