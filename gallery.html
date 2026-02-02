@@ -39,18 +39,18 @@
             font-size: 10px; font-weight: 900; border-radius: 50px; z-index: 10;
         }
 
-        .sold-overlay {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px); z-index: 20; display: flex;
-            align-items: center; justify-content: center;
-        }
-        .sold-tag {
-            border: 3px solid white; color: white; padding: 10px 25px;
-            font-family: 'Unbounded', sans-serif; transform: rotate(-15deg);
-            font-size: 14px; letter-spacing: 3px;
+        /* BANGO LA SOLD BILA UKUNGU */
+        .sold-banner {
+            position: absolute; top: 40px; right: -40px;
+            background: #000; color: #facc15; padding: 10px 100px;
+            font-family: 'Unbounded', sans-serif; font-size: 12px;
+            transform: rotate(40deg); z-index: 20; box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            letter-spacing: 5px; font-weight: 900; border: 1px solid #facc15;
         }
 
-        #admin-modal { display: none; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); }
+        /* ADMIN MODAL STYLE ILIYOBORESHWA */
+        #admin-modal { display: none; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); }
+        .admin-glass { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
 <body class="text-[#1a1a1a]">
@@ -96,7 +96,7 @@
             </div>
 
             <div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-                </div>
+            </div>
         </div>
     </main>
 
@@ -120,13 +120,16 @@
     </footer>
 
     <div id="admin-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-6">
-        <div class="bg-white w-full max-w-md rounded-[40px] p-12 relative shadow-2xl">
-            <button onclick="closeAdmin()" class="absolute top-8 right-8 text-gray-300 hover:text-black text-3xl">&times;</button>
-            <h2 class="artist-font text-xl uppercase mb-8 text-center">Admin Portal</h2>
+        <div class="admin-glass w-full max-w-md rounded-[40px] p-12 relative shadow-2xl border border-white/10">
+            <button onclick="closeAdmin()" class="absolute top-8 right-8 text-gray-400 hover:text-yellow-400 text-3xl">&times;</button>
+            <div class="flex justify-center mb-6">
+                <div class="w-16 h-1 bg-yellow-400 rounded-full"></div>
+            </div>
+            <h2 class="artist-font text-xl uppercase mb-8 text-center text-white tracking-widest">Master <span class="text-yellow-400">Vault</span></h2>
             <form id="admin-login-form" class="space-y-6">
-                <input type="email" id="admin-email" placeholder="ADMIN EMAIL" required class="w-full bg-gray-50 p-5 rounded-2xl border border-gray-100 outline-none focus:border-black">
-                <input type="password" id="admin-password" placeholder="SECRET KEY" required class="w-full bg-gray-50 p-5 rounded-2xl border border-gray-100 outline-none focus:border-black">
-                <button type="submit" class="w-full bg-black text-white py-5 rounded-2xl artist-font text-[10px] uppercase tracking-[0.3em]">Verify Identity</button>
+                <input type="email" id="admin-email" placeholder="ADMIN EMAIL" required class="w-full bg-white/5 p-5 rounded-2xl border border-white/10 outline-none focus:border-yellow-400 text-white transition">
+                <input type="password" id="admin-password" placeholder="SECRET KEY" required class="w-full bg-white/5 p-5 rounded-2xl border border-white/10 outline-none focus:border-yellow-400 text-white transition">
+                <button type="submit" class="w-full bg-yellow-400 text-black py-5 rounded-2xl artist-font text-[10px] uppercase tracking-[0.3em] font-black hover:bg-white transition-all duration-500">Unveil Dashboard</button>
             </form>
         </div>
     </div>
@@ -137,7 +140,6 @@
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
 
-        // Secret Logo Long Press (3 sec)
         let logoTimer;
         const secretLogo = document.getElementById('secret-logo');
         secretLogo.addEventListener('mousedown', () => logoTimer = setTimeout(openAdmin, 3000));
@@ -148,18 +150,16 @@
         function openAdmin() { document.getElementById('admin-modal').style.display = 'flex'; }
         function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
 
-        // Login
         document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const { error } = await supabaseClient.auth.signInWithPassword({
                 email: document.getElementById('admin-email').value,
                 password: document.getElementById('admin-password').value
             });
-            if (error) alert("Access Denied");
+            if (error) alert("Identity not verified.");
             else window.location.href = 'admin-dashboard.html';
         });
 
-        // Load Shop
         async function loadShop() {
             const grid = document.getElementById('shop-grid');
             const { data } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
@@ -173,27 +173,33 @@
                         `<span class="text-red-600 font-black">${symbol} ${item.sale_price}</span> <span class="line-through text-gray-400 text-[10px] ml-2 font-normal">${symbol} ${item.price}</span>` : 
                         `<span class="font-black">${symbol} ${item.price}</span>`;
 
-                    // UJUMBE WA WHATSAPP KWA KINGEREZA
                     const waText = encodeURIComponent(`Hello Bes Artist, I'm interested in the artwork "${item.title}".\n\nPrice: ${symbol} ${item.is_sale ? item.sale_price : item.price}\nReference: ${item.image_url}`);
                     const waLink = `https://wa.me/255754494949?text=${waText}`;
 
                     return `
                         <div class="art-card bg-white rounded-[40px] overflow-hidden shadow-2xl border border-gray-100 relative group">
-                            ${isSold ? '<div class="sold-overlay"><div class="sold-tag">SOLD OUT</div></div>' : ''}
+                            ${isSold ? '<div class="sold-banner">SOLD</div>' : ''}
                             ${item.is_sale && !isSold ? '<div class="sale-badge uppercase">Special Offer</div>' : ''}
-                            <div class="h-[450px] overflow-hidden">
+                            <div class="h-[450px] overflow-hidden relative">
                                 <img src="${item.image_url}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                             </div>
                             <div class="p-10">
-                                <div class="flex justify-between items-start mb-6">
+                                <div class="flex justify-between items-start mb-4">
                                     <div>
                                         <h3 class="artist-font text-xs uppercase tracking-wider mb-2">${item.title}</h3>
                                         <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em]">${item.category}</p>
                                     </div>
                                     <div class="text-right text-sm">${priceHTML}</div>
                                 </div>
+                                
+                                <div class="mb-8">
+                                    <p class="text-[11px] text-gray-500 italic leading-relaxed">
+                                        ${item.description ? item.description : 'Explore the narrative behind this visual masterpiece by Brian Erick.'}
+                                    </p>
+                                </div>
+
                                 ${isSold ? 
-                                    `<button disabled class="w-full py-5 border border-gray-100 text-gray-300 rounded-2xl text-[9px] uppercase tracking-[0.3em] cursor-not-allowed">Private Collection</button>` :
+                                    `<button disabled class="w-full py-5 border border-gray-100 text-gray-300 rounded-2xl text-[9px] uppercase tracking-[0.3em] cursor-not-allowed italic">Part of Private Collection</button>` :
                                     `<a href="${waLink}" target="_blank" class="block w-full text-center bg-black text-white py-5 rounded-2xl artist-font text-[9px] uppercase tracking-[0.3em] hover:bg-yellow-400 hover:text-black transition-all">Acquire Artwork</a>`
                                 }
                             </div>
