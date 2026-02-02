@@ -131,6 +131,22 @@
             else loadData();
         }
 
+        // FUNCTION YA KUTUMA EMAIL KWA WOTE
+        async function emailAll() {
+            const { data: subs, error } = await supabaseClient.from('subscribers').select('email');
+            if (error || !subs || subs.length === 0) {
+                alert("Hakuna collectors waliopatikana.");
+                return;
+            }
+
+            const emails = subs.map(s => s.email).join(',');
+            const subject = encodeURIComponent("Bes Artist | New Masterpiece Alert");
+            const body = encodeURIComponent("Habari Collector,\n\nKuna mchoro mpya umewekwa kwenye showroom sasa hivi. Karibu uwe wa kwanza kuutazama.\n\nTembelea Store hapa: https://besartist.com/gallery.html\n\nBest Regards,\nBes Artist.");
+            
+            // Inafungua barua pepe ikiwa imeweka emails zote kwenye sehemu ya wapokeaji (BCC is better but for simple trigger we use To)
+            window.location.href = `mailto:${emails}?subject=${subject}&body=${body}`;
+        }
+
         function updateLabel(inputId, labelId) {
             const file = document.getElementById(inputId).files[0];
             if(file) document.getElementById(labelId).innerHTML = `<i class="fa-solid fa-check-circle text-green-500 mr-2"></i> ${file.name.substring(0, 15)}...`;
