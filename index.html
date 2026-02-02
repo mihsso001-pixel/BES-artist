@@ -1,231 +1,186 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bes Artist | Official Portfolio</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
-
+    <title>Bes Artist | Global Admin Command</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Unbounded:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;900&family=Inter:wght@300;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <style>
-        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: #050505; color: #e5e5e5; }
         .artist-font { font-family: 'Unbounded', sans-serif; }
-        
-        .outline-text {
-            color: transparent;
-            -webkit-text-stroke: 1px black;
-        }
-        .outline-text-white {
-            color: transparent;
-            -webkit-text-stroke: 1px white;
-        }
-
-        .moving-nav {
-            background: linear-gradient(-45deg, #facc15, #000000, #ffffff, #facc15);
-            background-size: 400% 400%;
-            animation: gradientMove 10s ease infinite;
-        }
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .logo-circle {
-            width: 70px; height: 70px;
-            border-radius: 50%; object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        @media (min-width: 768px) { .logo-circle { width: 90px; height: 90px; } }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        .video-card {
-            min-width: 85vw; 
-            scroll-snap-align: center;
-        }
-        @media (min-width: 768px) {
-            .video-card { min-width: auto; }
-        }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .input-pro { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; width: 100%; outline: none; transition: 0.3s; color: white; }
+        .input-pro:focus { border-color: #facc15; }
+        .btn-main { background: #facc15; color: #000; font-weight: 900; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; }
+        .btn-main:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(250, 204, 21, 0.2); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #facc15; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-[#fafafa] text-[#1a1a1a]">
+<body class="min-h-screen pb-20">
 
-    <nav class="moving-nav fixed w-full z-[100] border-b border-gray-800 shadow-xl">
-        <div class="max-w-7xl mx-auto px-6 h-28 flex justify-between items-center">
-            <a href="index.html" class="flex items-center">
-                <img src="logo.png" alt="Bes Artist" class="logo-circle transition-transform hover:scale-110">
-            </a>
-
-            <div class="hidden md:flex space-x-10 font-bold text-[11px] tracking-[0.2em] uppercase text-white">
-                <a href="index.html" class="border-b-2 border-yellow-400">Home</a>
-                <a href="gallery.html" class="hover:text-yellow-400 transition">Gallery</a>
-                <a href="kuhusu.html" class="hover:text-yellow-400 transition">About</a>
-                <a href="wasiliana.html" class="hover:text-yellow-400 transition">Contact</a>
-            </div>
-
-            <button onclick="toggleMenu()" class="md:hidden text-white text-3xl focus:outline-none">
-                <i class="fa-solid fa-bars-staggered" id="menu-icon"></i>
-            </button>
+    <nav class="border-b border-white/5 py-6 px-8 flex justify-between items-center sticky top-0 bg-[#050505]/90 backdrop-blur-xl z-[100]">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-black font-black">B</div>
+            <h1 class="artist-font text-sm uppercase tracking-tighter">Bes <span class="text-yellow-400">Admin</span></h1>
         </div>
-
-        <div id="mobile-menu" class="hidden flex-col bg-black text-white p-8 space-y-6 font-bold text-center tracking-widest uppercase text-xs border-t border-gray-900 shadow-2xl transition-all duration-300">
-            <a href="index.html" class="text-yellow-400">Home</a>
-            <a href="gallery.html" class="hover:text-yellow-400">Gallery</a>
-            <a href="kuhusu.html" class="hover:text-yellow-400">About</a>
-            <a href="wasiliana.html" class="hover:text-yellow-400">Contact</a>
+        <div class="flex gap-4">
+            <a href="index.html" class="text-[9px] font-bold uppercase border border-white/10 px-5 py-2 rounded-full hover:bg-white hover:text-black transition">Home</a>
+            <button onclick="logout()" class="text-[9px] font-bold uppercase bg-red-600/10 text-red-500 px-5 py-2 rounded-full border border-red-500/20">Logout</button>
         </div>
     </nav>
 
-    <section class="pt-56 pb-10 px-6 text-center">
-        <span class="inline-block py-1 px-4 mb-6 text-[10px] font-bold tracking-[0.4em] bg-black text-white rounded-full uppercase">Official Portfolio</span>
-        <h1 class="artist-font text-5xl md:text-8xl leading-[0.9] uppercase">
-            BES <br> <span class="outline-text">ARTIST.</span>
-        </h1>
-        <p class="max-w-lg mx-auto text-gray-500 mt-6 text-sm uppercase tracking-widest font-bold">Brian Erick | Contemporary Visual Artist</p>
-    </section>
-
-    <div class="py-10 text-center flex flex-col md:flex-row justify-center items-center gap-6 px-6">
-        <a href="gallery.html" class="bg-black text-white px-10 py-5 text-xs font-bold tracking-[0.4em] hover:bg-yellow-400 hover:text-black transition uppercase border border-black shadow-2xl w-full md:w-80 flex items-center justify-center">
-            Explore Gallery
-        </a>
-
-        <a href="https://chat.whatsapp.com/KcCdA0it9Sc2t7gFUTZfX9" target="_blank" class="bg-[#25D366] text-white px-10 py-5 text-xs font-bold tracking-[0.2em] hover:bg-[#128C7E] transition uppercase shadow-2xl w-full md:w-80 flex items-center justify-center gap-3">
-            Join Community For More <i class="fa-brands fa-whatsapp text-xl"></i>
-        </a>
-    </div>
-
-    <div class="pb-10 flex justify-center px-6">
-        <div class="relative w-full md:w-[660px] group border-t border-gray-200 pt-8">
-            <form id="collector-form" class="flex flex-col md:flex-row gap-4 items-end">
-                <input type="email" id="collector-email" placeholder="ENTER EMAIL FOR EXCLUSIVE UPDATES" required 
-                    class="bg-transparent border-b-2 border-black py-4 px-2 text-[10px] font-bold tracking-widest outline-none focus:border-yellow-400 transition-colors uppercase w-full">
-                <button type="submit" id="join-btn" class="text-[9px] font-black tracking-[0.3em] uppercase hover:text-yellow-500 transition whitespace-nowrap pb-4">
-                    Join Collectors <i class="fa-solid fa-arrow-right ml-2"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <section id="tiktok" class="py-12 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="artist-font text-2xl mb-10 text-center uppercase tracking-widest">Creative Feed</h2>
-        </div>
+    <main class="max-w-7xl mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
         
-        <div id="tiktok-container" class="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory px-6 pb-10">
-            <p class="text-center col-span-full text-gray-400 italic">Curating visual experiences...</p>
-        </div>
-    </section>
-
-    <footer id="wasiliana" class="bg-black text-white py-20 px-6 text-center border-t border-gray-800 mt-20">
-        <div class="max-w-7xl mx-auto">
-            <p class="artist-font text-lg mb-12 tracking-widest outline-text-white uppercase" style="-webkit-text-stroke: 1px white;">Connect with Brian</p>
+        <div class="lg:col-span-8 space-y-10">
             
-            <div class="flex flex-wrap justify-center gap-10 mb-16">
-                <a href="https://www.youtube.com/@BrianErick-arts" target="_blank" title="YouTube" class="text-3xl hover:text-red-600 transition">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
-                <a href="https://www.tiktok.com/@brianartstudio1" target="_blank" title="TikTok" class="text-3xl hover:text-pink-500 transition">
-                    <i class="fa-brands fa-tiktok"></i>
-                </a>
-                <a href="https://www.instagram.com/Noone33989" target="_blank" title="Instagram" class="text-3xl hover:text-pink-600 transition">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="https://www.facebook.com/search/top?q=Brian%20Erick" target="_blank" title="Facebook" class="text-3xl hover:text-blue-600 transition">
-                    <i class="fa-brands fa-facebook"></i>
-                </a>
-                <a href="https://wa.me/255754494949" target="_blank" title="WhatsApp" class="text-3xl hover:text-green-500 transition">
-                    <i class="fa-brands fa-whatsapp"></i>
-                </a>
+            <div class="glass p-8 rounded-[40px]">
+                <h2 class="artist-font text-xs uppercase mb-8 flex items-center gap-3 text-yellow-400">
+                    <i class="fa-solid fa-palette"></i> Publish Masterpiece
+                </h2>
+                <form id="upload-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" id="title" placeholder="ARTWORK TITLE" required class="input-pro text-xs">
+                        <input type="text" id="category" placeholder="CATEGORY" class="input-pro text-xs">
+                    </div>
+                    <textarea id="description" placeholder="THE ARTWORK STORY" rows="2" class="input-pro text-xs"></textarea>
+                    <input type="file" id="image_file" accept="image/*" class="input-pro text-xs">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <input type="number" id="price" placeholder="PRICE" class="input-pro text-xs">
+                        <select id="currency" class="input-pro text-xs uppercase font-bold"><option value="TZS">TZS</option><option value="USD">USD</option></select>
+                        <select id="stock_status" class="input-pro text-xs font-bold"><option value="Available">AVAILABLE</option><option value="Sold Out">SOLD OUT</option></select>
+                    </div>
+                    <button type="submit" id="submit-btn" class="w-full btn-main py-5 rounded-2xl text-[10px]">Release Art</button>
+                </form>
             </div>
 
-            <div class="pt-10 border-t border-gray-900 text-[10px] tracking-[0.3em] text-gray-600 uppercase font-bold">
-                &copy; 2026 Brian (Bes Artist) | Visual Content Creator
+            <div class="glass p-8 rounded-[40px]">
+                <h2 class="artist-font text-xs uppercase mb-8 flex items-center gap-3 text-pink-500">
+                    <i class="fa-brands fa-tiktok"></i> TikTok Manager
+                </h2>
+                <form id="tiktok-form" class="flex flex-col md:flex-row gap-4 mb-8">
+                    <input type="text" id="video_id_input" placeholder="PASTE VIDEO ID (mfano: 73456789...)" required 
+                        class="input-pro text-xs flex-1">
+                    <button type="submit" id="add-video-btn" class="bg-pink-600 hover:bg-pink-500 text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase transition md:w-48">
+                        Add Video
+                    </button>
+                </form>
+                
+                <h3 class="text-[9px] uppercase tracking-[0.2em] mb-4 opacity-50 font-bold">Live Videos on Web</h3>
+                <div id="admin-tiktok-list" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    </div>
             </div>
         </div>
-    </footer>
+
+        <div class="lg:col-span-4 space-y-10">
+            <div class="glass p-8 rounded-[40px]">
+                <h3 class="artist-font text-xs uppercase mb-6 flex justify-between">Live Art <span id="item-count" class="text-yellow-400">0</span></h3>
+                <div id="art-list" class="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar"></div>
+            </div>
+
+            <div class="glass p-8 rounded-[40px]">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="artist-font text-xs uppercase">Collectors</h3>
+                    <button onclick="emailAll()" class="text-[8px] font-black bg-yellow-400 text-black px-3 py-1 rounded-lg uppercase">Broadcast</button>
+                </div>
+                <div id="sub-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar"></div>
+            </div>
+        </div>
+    </main>
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                menu.classList.add('flex');
-                icon.classList.replace('fa-bars-staggered', 'fa-xmark');
-            } else {
-                menu.classList.add('hidden');
-                menu.classList.remove('flex');
-                icon.classList.replace('fa-xmark', 'fa-bars-staggered');
-            }
-        }
-
         const _supabaseURL = 'https://czifyhpvtdesbwpofbmv.supabase.co';
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
 
-        document.getElementById('collector-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const emailInput = document.getElementById('collector-email');
-            const joinBtn = document.getElementById('join-btn');
-            const email = emailInput.value;
+        async function checkAuth() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) window.location.href = 'gallery.html';
+            else loadData();
+        }
 
-            joinBtn.innerText = "LINKING...";
-            joinBtn.disabled = true;
-
-            try {
-                const { error } = await supabaseClient
-                    .from('subscribers')
-                    .insert([{ email: email }]);
-
-                if (error) {
-                    if (error.code === '23505') throw new Error("Email already in vault.");
-                    throw error;
-                }
-
-                alert("Welcome to the Vault!");
-                emailInput.value = '';
-            } catch (err) {
-                alert(err.message);
-            } finally {
-                joinBtn.innerHTML = 'Join Collectors <i class="fa-solid fa-arrow-right ml-2"></i>';
-                joinBtn.disabled = false;
+        async function loadData() {
+            // Load Arts
+            const { data: arts } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
+            if(arts) {
+                document.getElementById('art-list').innerHTML = arts.map(a => `
+                    <div class="p-3 bg-white/5 rounded-2xl flex items-center justify-between border border-white/5">
+                        <img src="${a.image_url}" class="w-10 h-10 rounded-lg object-cover">
+                        <button onclick="deleteArt('${a.id}')" class="text-red-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `).join('');
+                document.getElementById('item-count').innerText = arts.length;
             }
-        });
 
-        async function fetchVideos() {
-            const container = document.getElementById('tiktok-container');
-            const { data, error } = await supabaseClient
-                .from('videos')
-                .select('*')
-                .order('created_at', { ascending: false });
+            // Load TikToks
+            const { data: vids } = await supabaseClient.from('videos').select('*').order('created_at', { ascending: false });
+            if(vids) {
+                document.getElementById('admin-tiktok-list').innerHTML = vids.map(v => `
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
+                        <p class="text-[8px] mb-2 opacity-50">ID: ${v.video_id}</p>
+                        <button onclick="deleteVideo('${v.id}')" class="text-red-500 hover:text-white text-[9px] font-bold uppercase">
+                            <i class="fa-solid fa-trash-can mr-1"></i> Remove
+                        </button>
+                    </div>
+                `).join('');
+            }
 
-            if (data && data.length > 0) {
-                container.innerHTML = ''; 
-                data.forEach(item => {
-                    container.innerHTML += `
-                        <div class="video-card bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 p-2">
-                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@brianartstudio1/video/${item.video_id}" data-video-id="${item.video_id}" style="width: 100%;">
-                                <section><a target="_blank" href="https://www.tiktok.com/@brianartstudio1">@brianartstudio1</a></section>
-                            </blockquote>
-                        </div>`;
-                });
-
-                const script = document.createElement('script');
-                script.src = "https://www.tiktok.com/embed.js";
-                script.async = true;
-                document.body.appendChild(script);
+            // Load Subs
+            const { data: subs } = await supabaseClient.from('subscribers').select('*');
+            if(subs) {
+                document.getElementById('sub-list').innerHTML = subs.map(s => `
+                    <div class="text-[9px] opacity-60 border-b border-white/5 pb-1">${s.email}</div>
+                `).join('');
             }
         }
-        fetchVideos();
+
+        // TIKTOK FUNCTIONS
+        document.getElementById('tiktok-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('video_id_input');
+            const btn = document.getElementById('add-video-btn');
+            const id = input.value.trim();
+
+            btn.innerText = "ADDING...";
+            btn.disabled = true;
+
+            const { error } = await supabaseClient.from('videos').insert([{ video_id: id }]);
+
+            if(!error) {
+                input.value = '';
+                loadData();
+            } else {
+                alert(error.message);
+            }
+            btn.innerText = "ADD VIDEO";
+            btn.disabled = false;
+        });
+
+        async function deleteVideo(db_id) {
+            if(confirm("Futa video hii?")) {
+                const { error } = await supabaseClient.from('videos').delete().eq('id', db_id);
+                if(!error) loadData();
+            }
+        }
+
+        // ART FUNCTIONS (Kodi zako za asili)
+        async function deleteArt(id) {
+            if(confirm("Futa artwork hii?")) {
+                const { error } = await supabaseClient.from('gallery').delete().eq('id', id);
+                if(!error) loadData();
+            }
+        }
+
+        async function logout() { 
+            await supabaseClient.auth.signOut(); 
+            window.location.href = 'gallery.html'; 
+        }
+
+        checkAuth();
     </script>
 </body>
 </html>
