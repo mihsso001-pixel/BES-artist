@@ -28,9 +28,10 @@
             width: 70px; height: 70px; border-radius: 50%; object-fit: cover; 
             border: 2px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             cursor: pointer; transition: transform 0.3s;
+            -webkit-user-select: none; user-select: none;
         }
 
-        .art-card { transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .art-card { transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); cursor: pointer; }
         .art-card:hover { transform: translateY(-15px); }
         
         .sale-badge {
@@ -47,8 +48,23 @@
             letter-spacing: 5px; font-weight: 900; border: 1px solid #facc15;
         }
 
-        #admin-modal { display: none; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); }
+        /* Pulse for view process icon */
+        .eye-trigger {
+            position: absolute; bottom: 20px; right: 20px;
+            background: rgba(250, 204, 21, 0.95); width: 45px; height: 45px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: black; font-size: 18px; z-index: 30;
+            animation: pulse-yellow 2s infinite;
+        }
+        @keyframes pulse-yellow {
+            0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(250, 204, 21, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+        }
+
+        #admin-modal, #studio-modal { display: none; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); }
         .admin-glass { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .studio-img { max-height: 75vh; width: auto; max-width: 90vw; object-fit: contain; }
     </style>
 </head>
 <body class="text-[#1a1a1a]">
@@ -58,19 +74,14 @@
             <div class="flex items-center">
                 <img src="logo.png" alt="Bes Artist" class="logo-circle" id="secret-logo">
             </div>
-
             <div class="hidden md:flex items-center space-x-10 font-bold text-[11px] tracking-[0.2em] uppercase text-white">
                 <a href="index.html" class="hover:text-yellow-400 transition">Home</a>
                 <a href="gallery.html" class="border-b-2 border-yellow-400 text-yellow-400">Store</a>
                 <a href="kuhusu.html" class="hover:text-yellow-400 transition">About</a>
                 <a href="wasiliana.html" class="hover:text-yellow-400 transition">Contact</a>
             </div>
-
-            <button onclick="toggleMenu()" class="md:hidden text-white text-3xl focus:outline-none">
-                <i class="fa-solid fa-bars-staggered" id="menu-icon"></i>
-            </button>
+            <button onclick="toggleMenu()" class="md:hidden text-white text-3xl focus:outline-none"><i class="fa-solid fa-bars-staggered"></i></button>
         </div>
-        
         <div id="mobile-menu" class="hidden flex-col bg-black text-white p-8 space-y-6 font-bold text-center tracking-widest uppercase text-xs border-t border-gray-900 shadow-2xl">
             <a href="index.html">Home</a>
             <a href="gallery.html" class="text-yellow-400">Store</a>
@@ -80,28 +91,24 @@
     </nav>
 
     <main class="pt-56 pb-20 px-6">
-        <div class="max-w-7xl mx-auto text-center md:text-left">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20 text-center md:text-left">
                 <div>
                     <span class="inline-block py-1 px-4 mb-4 text-[10px] font-bold tracking-[0.4em] bg-black text-white rounded-full uppercase">Global Art Release</span>
-                    <h1 class="artist-font text-5xl md:text-8xl uppercase leading-none">
-                        THE <br> <span class="outline-text">SHOWROOM.</span>
-                    </h1>
+                    <h1 class="artist-font text-5xl md:text-8xl uppercase leading-none">THE <br> <span class="outline-text">SHOWROOM.</span></h1>
                 </div>
-                <div class="pb-2">
-                    <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.3em] max-w-xs">Curated masterpieces for international collectors by Brian Erick.</p>
+                <div class="pb-2 flex flex-col items-center md:items-end gap-4">
+                    <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.3em] max-w-xs text-center md:text-right">Curated masterpieces by Brian Erick.</p>
+                    <input type="text" id="art-search" onkeyup="filterArt()" placeholder="SEARCH ART..." class="bg-white border border-gray-200 px-6 py-3 rounded-full outline-none text-[10px] font-bold tracking-widest w-full max-w-xs focus:border-yellow-400 transition-all">
                 </div>
             </div>
-
-            <div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12"></div>
+            <div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-32"></div>
         </div>
     </main>
 
     <section class="bg-black py-32 px-6 text-white text-center border-t border-gray-900">
         <div class="max-w-2xl mx-auto">
             <h2 class="artist-font text-3xl md:text-5xl mb-8 uppercase">Collector's <span class="text-yellow-400">Circle</span></h2>
-            <p class="text-gray-400 mb-12 tracking-widest uppercase text-[10px] font-bold">Join the newsletter for exclusive early access to new collections.</p>
-            
             <form id="newsletter-form" class="flex flex-col sm:flex-row gap-4">
                 <input type="email" id="subscriber-email" placeholder="EMAIL ADDRESS" required class="flex-1 bg-white/5 border border-white/10 px-8 py-5 rounded-2xl focus:border-yellow-400 outline-none text-sm text-white">
                 <button type="submit" class="bg-yellow-400 text-black px-12 py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-white transition-all">Join Now</button>
@@ -111,10 +118,24 @@
     </section>
 
     <footer class="bg-black text-white py-20 px-6 text-center border-t border-gray-900">
-        <div class="max-w-7xl mx-auto text-gray-500 font-bold text-[9px] tracking-[0.4em] uppercase">
-            &copy; 2026 Bes Artist | All Rights Reserved
-        </div>
+        <div class="max-w-7xl mx-auto text-gray-500 font-bold text-[9px] tracking-[0.4em] uppercase">&copy; 2026 Bes Artist | All Rights Reserved</div>
     </footer>
+
+    <div id="studio-modal" class="fixed inset-0 z-[300] flex flex-col items-center justify-center p-4">
+        <button onclick="closeStudio()" class="absolute top-6 right-6 text-white text-4xl hover:text-yellow-400">&times;</button>
+        <div id="studio-content" class="max-w-5xl w-full flex flex-col items-center">
+            <div id="studio-container" class="relative w-full flex justify-center items-center h-[60vh] md:h-[75vh]"></div>
+            <div class="mt-8 text-center px-4">
+                <h2 id="studio-title" class="artist-font text-white text-lg md:text-xl uppercase mb-2"></h2>
+                <div id="stage-indicators" class="flex gap-2 justify-center mb-4"></div>
+                <p id="studio-stage-label" class="text-yellow-400 font-bold text-[9px] uppercase tracking-[0.5em]"></p>
+            </div>
+            <div class="flex gap-10 mt-6">
+                <button onclick="prevStage()" class="text-white hover:text-yellow-400 text-2xl transition-all"><i class="fa-solid fa-arrow-left-long"></i></button>
+                <button onclick="nextStage()" class="text-white hover:text-yellow-400 text-2xl transition-all"><i class="fa-solid fa-arrow-right-long"></i></button>
+            </div>
+        </div>
+    </div>
 
     <div id="admin-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-6">
         <div class="admin-glass w-full max-w-md rounded-[40px] p-12 relative shadow-2xl border border-white/10">
@@ -134,70 +155,91 @@
         const _supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aWZ5aHB2dGRlc2J3cG9mYm12Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NTk0NzMsImV4cCI6MjA4NTQzNTQ3M30.p88aKBMn5Sz5ZXW7cSzL1APW3Ow1hax8k1pUZbCojUg';
         const supabaseClient = supabase.createClient(_supabaseURL, _supabaseKey);
 
+        let allArts = [], studioImages = [], currentStageIdx = 0, currentItem = null;
+
+        // HOLD LOGO LOGIC
         let logoTimer;
         const secretLogo = document.getElementById('secret-logo');
-        secretLogo.addEventListener('mousedown', () => logoTimer = setTimeout(openAdmin, 3000));
-        secretLogo.addEventListener('mouseup', () => clearTimeout(logoTimer));
-        secretLogo.addEventListener('touchstart', (e) => { e.preventDefault(); logoTimer = setTimeout(openAdmin, 3000); });
-        secretLogo.addEventListener('touchend', () => clearTimeout(logoTimer));
+        const startTimer = (e) => { e.preventDefault(); logoTimer = setTimeout(() => document.getElementById('admin-modal').style.display='flex', 3000); };
+        const clearTimer = () => clearTimeout(logoTimer);
+        secretLogo.addEventListener('mousedown', startTimer);
+        secretLogo.addEventListener('mouseup', clearTimer);
+        secretLogo.addEventListener('touchstart', startTimer);
+        secretLogo.addEventListener('touchend', clearTimer);
 
-        function openAdmin() { document.getElementById('admin-modal').style.display = 'flex'; }
         function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
 
         async function loadShop() {
-            const grid = document.getElementById('shop-grid');
             const { data } = await supabaseClient.from('gallery').select('*').order('created_at', { ascending: false });
-
-            if (data && data.length > 0) {
-                grid.innerHTML = data.map(item => {
-                    const isSold = item.stock_status === 'Sold Out';
-                    const symbol = item.currency === 'USD' ? '$' : 'Tsh';
-                    
-                    // SEHEMU YA BEI ILIYOBORESHWA (ONGEZA BEI ILIYOKATWA)
-                    const priceHTML = item.is_sale ? 
-                        `<span class="text-red-600 font-black">${symbol} ${item.sale_price}</span> <span class="line-through text-gray-400 text-[10px] ml-2 font-normal">${symbol} ${item.price}</span>` : 
-                        `<span class="font-black">${symbol} ${item.price}</span>`;
-
-                    const waText = encodeURIComponent(`Hello Bes Artist, I'm interested in the artwork "${item.title}".\n\nPrice: ${symbol} ${item.is_sale ? item.sale_price : item.price}`);
-                    const waLink = `https://wa.me/255754494949?text=${waText}`;
-
-                    return `
-                        <div class="art-card bg-white rounded-[40px] overflow-hidden shadow-2xl border border-gray-100 relative group">
-                            ${isSold ? '<div class="sold-banner">SOLD</div>' : ''}
-                            ${item.is_sale && !isSold ? '<div class="sale-badge uppercase">Special Offer</div>' : ''}
-                            <div class="h-[450px] overflow-hidden relative">
-                                <img src="${item.image_url}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
-                            </div>
-                            <div class="p-10">
-                                <div class="flex justify-between items-start mb-4">
-                                    <div>
-                                        <h3 class="artist-font text-xs uppercase tracking-wider mb-2">${item.title}</h3>
-                                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em]">${item.category}</p>
-                                    </div>
-                                    <div class="text-right text-sm">${priceHTML}</div>
-                                </div>
-                                <p class="text-[11px] text-gray-500 italic mb-8">${item.description || 'Global Masterpiece.'}</p>
-                                ${isSold ? 
-                                    `<button disabled class="w-full py-5 border border-gray-100 text-gray-300 rounded-2xl text-[9px] uppercase italic">Sold Out</button>` :
-                                    `<a href="${waLink}" target="_blank" class="block w-full text-center bg-black text-white py-5 rounded-2xl artist-font text-[9px] uppercase hover:bg-yellow-400 hover:text-black transition-all">Acquire Artwork</a>`
-                                }
-                            </div>
-                        </div>`;
-                }).join('');
-            }
+            allArts = data || [];
+            renderGrid(allArts);
         }
 
-        document.getElementById('newsletter-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const emailInput = document.getElementById('subscriber-email');
-            const { error } = await supabaseClient.from('subscribers').insert([{ email: emailInput.value }]);
-            const status = document.getElementById('news-status');
-            status.classList.remove('hidden');
-            status.innerText = error ? "Registration Failed" : "Welcome to the Inner Circle!";
-            if (!error) emailInput.value = "";
-        });
+        function renderGrid(data) {
+            const grid = document.getElementById('shop-grid');
+            grid.innerHTML = data.map(item => {
+                const isSold = item.stock_status === 'Sold Out';
+                const hasStages = item.stage_1_url || item.stage_2_url;
+                const symbol = item.currency === 'USD' ? '$' : 'Tsh';
+                const priceHTML = item.is_sale ? 
+                    `<span class="text-red-600 font-black">${symbol} ${item.sale_price}</span> <span class="line-through text-gray-400 text-[10px] ml-2 font-normal">${symbol} ${item.price}</span>` : 
+                    `<span class="font-black">${symbol} ${item.price}</span>`;
+                const waLink = `https://wa.me/255754494949?text=${encodeURIComponent('Interest: ' + item.title)}`;
 
+                return `
+                    <div class="art-card bg-white rounded-[40px] overflow-hidden shadow-2xl border border-gray-100 relative group" onclick="openStudio('${item.id}')">
+                        ${isSold ? '<div class="sold-banner">SOLD</div>' : ''}
+                        ${item.is_sale && !isSold ? '<div class="sale-badge uppercase">Special Offer</div>' : ''}
+                        ${hasStages ? '<div class="eye-trigger"><i class="fa-solid fa-eye text-sm"></i></div>' : ''}
+                        <div class="h-[450px] overflow-hidden relative">
+                            <img src="${item.image_url}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                        </div>
+                        <div class="p-10" onclick="event.stopPropagation()">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="artist-font text-xs uppercase tracking-wider mb-2">${item.title}</h3>
+                                    <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em]">${item.category}</p>
+                                </div>
+                                <div class="text-right text-sm">${priceHTML}</div>
+                            </div>
+                            <p class="text-[11px] text-gray-500 italic mb-8">${item.description || 'Masterpiece.'}</p>
+                            ${isSold ? `<button disabled class="w-full py-5 border border-gray-100 text-gray-300 rounded-2xl text-[9px] uppercase italic">Sold Out</button>` :
+                            `<a href="${waLink}" target="_blank" class="block w-full text-center bg-black text-white py-5 rounded-2xl artist-font text-[9px] uppercase hover:bg-yellow-400 hover:text-black transition-all">Acquire Artwork</a>`}
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function filterArt() {
+            const term = document.getElementById('art-search').value.toLowerCase();
+            renderGrid(allArts.filter(a => a.title.toLowerCase().includes(term) || a.category.toLowerCase().includes(term)));
+        }
+
+        function openStudio(id) {
+            currentItem = allArts.find(a => a.id === id);
+            studioImages = [];
+            if(currentItem.stage_1_url) studioImages.push({url: currentItem.stage_1_url, label: "Stage 1: Sketch"});
+            if(currentItem.stage_2_url) studioImages.push({url: currentItem.stage_2_url, label: "Stage 2: Process"});
+            studioImages.push({url: currentItem.image_url, label: "Final Masterpiece"});
+            currentStageIdx = studioImages.length - 1;
+            updateStudio();
+            document.getElementById('studio-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateStudio() {
+            const container = document.getElementById('studio-container');
+            container.innerHTML = `<img src="${studioImages[currentStageIdx].url}" class="studio-img rounded-lg shadow-2xl">`;
+            document.getElementById('studio-title').innerText = currentItem.title;
+            document.getElementById('studio-stage-label').innerText = studioImages[currentStageIdx].label;
+            document.getElementById('stage-indicators').innerHTML = studioImages.map((_, i) => `<div class="w-1.5 h-1.5 rounded-full ${i === currentStageIdx ? 'bg-yellow-400' : 'bg-white/20'}"></div>`).join('');
+        }
+
+        function nextStage() { if(currentStageIdx < studioImages.length - 1) { currentStageIdx++; updateStudio(); } }
+        function prevStage() { if(currentStageIdx > 0) { currentStageIdx--; updateStudio(); } }
+        function closeStudio() { document.getElementById('studio-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+
         loadShop();
     </script>
 </body>
